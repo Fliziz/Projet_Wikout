@@ -1,0 +1,158 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\FichesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: FichesRepository::class)]
+class Fiches
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $Nom = null;
+
+    #[ORM\Column(type: 'text')]
+    private ?string $Description = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?utilisateurs $Utilisateur = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?categories $Categorie = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?type $Type = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?difficulte $Difficulte = null;
+
+    /**
+     * @var Collection<int, commentaire>
+     */
+    #[ORM\OneToMany(targetEntity: commentaires::class, mappedBy: 'Fiche', orphanRemoval: true)]
+    private Collection $Commentaires;
+
+    public function __construct()
+    {
+        $this->Commentaire = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->Nom;
+    }
+
+    public function setNom(string $Nom): static
+    {
+        $this->Nom = $Nom;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->Description;
+    }
+
+    public function setDescription(string $Description): static
+    {
+        $this->Description = $Description;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?utilisateurs
+    {
+        return $this->Utilisateur;
+    }
+
+    public function setUtilisateur(?utilisateurs $Utilisateur): static
+    {
+        $this->Utilisateur = $Utilisateur;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?categories
+    {
+        return $this->Categorie;
+    }
+
+    public function setCategorie(categories $Categorie): static
+    {
+        $this->Categorie = $Categorie;
+
+        return $this;
+    }
+
+    public function getType(): ?type
+    {
+        return $this->Type;
+    }
+
+    public function setType(type $Type): static
+    {
+        $this->Type = $Type;
+
+        return $this;
+    }
+
+    public function getDifficulte(): ?difficulte
+    {
+        return $this->Difficulte;
+    }
+
+    public function setDifficulte(difficulte $Difficulte): static
+    {
+        $this->Difficulte = $Difficulte;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, commentaire>
+     */
+    public function getCommentaire(): Collection
+    {
+        return $this->Commentaire;
+    }
+
+    public function addCommentaire(commentaires $commentaire): static
+    {
+        if (!$this->Commentaire->contains($commentaire)) {
+            $this->Commentaire->add($commentaire);
+            $commentaire->setFiche($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(commentaires $commentaire): static
+    {
+        if ($this->Commentaire->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getFiche() === $this) {
+                $commentaire->setFiche(null);
+            }
+        }
+
+        return $this;
+    }
+}
