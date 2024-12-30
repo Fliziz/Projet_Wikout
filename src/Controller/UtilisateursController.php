@@ -22,6 +22,7 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
         return $this->render('utilisateurs/index.html.twig', ['utilisateurs' => $utilisateurs]); // Rendu de la vue 'utilisateurs/index.html.twig', avec la liste des utilisateurs passée à la vue
     }
 
+
     #[Route('/new', name: 'utilisateurs_new', methods: ['GET', 'POST'])] // La route '/new' pour afficher le formulaire de création et traiter l'envoi du formulaire
     public function new(Request $request, EntityManagerInterface $em): Response // La méthode new() gère l'affichage et la création de nouveaux utilisateurs
     {
@@ -34,7 +35,7 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
 
             // Hachage du mot de passe avant de le sauvegarder dans la base de données
             $hashedPassword = password_hash($request->request->get('Mot_de_Passe'), PASSWORD_BCRYPT); // Utilise bcrypt pour sécuriser le mot de passe
-            $Utilisateur->setMotDePasse($hashedPassword); // On attribue le mot de passe haché à l'utilisateur
+            $Utilisateur->setPassword($hashedPassword); // On attribue le mot de passe haché à l'utilisateur
 
             $role = $request->request->get('role', 'ROLE_utilisateur'); // On récupère le rôle du formulaire. Par défaut, il sera 'ROLE_utilisateurs'
             $Utilisateur->setRoles([$role]); // Attribue le rôle à l'utilisateur
@@ -47,24 +48,46 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
 
         return $this->render('utilisateurs/new.html.twig'); // Si la méthode est GET (formulaire de création), on affiche le formulaire
     }
+
     
     #[Route('/{id}/edit', name: 'utilisateurs_edit', methods: ['GET', 'POST'])] // La route '/{id}/edit' permet de modifier un utilisateur existant
     public function edit(Utilisateurs $Utilisateur, Request $request, EntityManagerInterface $em): Response // La méthode edit() permet de modifier les informations d'un utilisateur existant
     {
         if ($request->isMethod('POST')) { // Si la requête est de type POST (formulaire soumis)
             // Récupère et met à jour les informations de l'utilisateur
-            $Utilisateur->setName($request->request->get('name')); // Modifie le nom de l'utilisateur
-            $Utilisateur->setEmail($request->request->get('email')); // Modifie l'email de l'utilisateur
+            
+            $Utilisateur->setPhotoProfil($request->request->get('Photo_Profil')); // Modifie l'email de l'utilisateur
+            
+            $Utilisateur->setPseudo($request->request->get('Pseudo')); // Modifie le nom de l'utilisateur
 
-            $role = $request->request->get('role', 'ROLE_utilisateurs'); // Récupère et met à jour le rôle de l'utilisateur
-            $Utilisateur->setRoles([$role]); // Modifie le rôle de l'utilisateur
+            $Utilisateur->setEmail($request->request->get('Email')); // Modifie l'email de l'utilisateur
 
+            $Utilisateur->setNom($request->request->get('Nom')); // Modifie l'email de l'utilisateur
+
+            $Utilisateur->setPrenom($request->request->get('Prenom')); // Modifie l'email de l'utilisateur
+
+            
+            // Récupération de l'âge sous forme de chaîne
+            $age = $request->request->get('Age'); 
+
+            // Conversion en objet DateTime
+            $dateTimeAge = $age ? \DateTime::createFromFormat('Y-m-d', $age) : null;
+
+            $Utilisateur->setAge($dateTimeAge);
+
+            $Utilisateur->setGenre($request->request->get('Genre'));
+
+            $Utilisateur->setDescription($request->request->get('Description')); // Modifie l'email de l'utilisateur
+
+            $Role = $request->request->get('Role', 'ROLE_utilisateurs'); // Récupère et met à jour le rôle de l'utilisateur
+            $Utilisateur->setRoles([$Role]); // Modifie le rôle de l'utilisateur
+            
             $em->flush(); // Sauvegarde les modifications apportées à l'utilisateur dans la base de données
 
             return $this->redirectToRoute('utilisateurs_index'); // Redirige vers la page de la liste des utilisateurs après modification
         }
 
-        return $this->render('utilisateurs/edit.html.twig', ['utilisateurs' => $utilisateurs]); // Affiche le formulaire avec les données de l'utilisateur à modifier
+        return $this->render('utilisateurs/edit.html.twig', ['Utilisateur' => $Utilisateur]); // Affiche le formulaire avec les données de l'utilisateur à modifier
     }
 
     #[Route('/{id}/delete', name: 'utilisateurs_delete', methods: ['POST'])] // La route '/{id}/delete' permet de supprimer un utilisateur

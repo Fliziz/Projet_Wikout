@@ -26,15 +26,16 @@
                     <td>{{ utilisateur.roles|join(', ') }}</td>
                     <td>{{ utilisateur.Nom }}</td>
                     <td>{{ utilisateur.Prenom }}</td>
-                    <td>{{ utilisateur.Age }}</td>
+                    <td>{{ utilisateur.Age ? utilisateur.Age|date('Y-m-d') : '' }}</td>
                     <td>{{ utilisateur.Genre }}</td>
                     <td>{{ utilisateur.Description }}</td>
                     <td>
-                        {# <a href="{{ path('utilisateurs_edit', {id: utilisateur.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        <a href="{{ path('utilisateurs_edit', {id: utilisateur.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+
                         <form action="{{ path('utilisateurs_delete', {id: utilisateur.id}) }}" method="post" style="display: inline;">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ utilisateur.id) }}">
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</button>
-                        </form> #}
+                        </form>
                     </td>
                 </tr>
             {% else %}

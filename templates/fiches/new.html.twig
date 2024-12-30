@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Ajouter un utilisateur</h1>
+    <form method="post" class="mt-4">
+
+        <input type="hidden" name="Utilisateur" value="{{ app.user.id }}">
+
+        <div class="form-group mt-3">
+            <label for="Photo">Photo</label>
+            <input type="text" name="Photo" class="form-control" required>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Nom">Nom</label>
+            <input type="text" name="Nom" class="form-control" required>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Description">Description</label>
+            <textarea type="text" name="Description" class="form-control" required></textarea>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Categorie_id">categorie</label>
+            <select name="Categorie_id">
+                <option value="">-- Toutes les catégories --</option>
+                {% for categorie in categories %}
+                    <option value="{{ categorie.id }}">{{ categorie.nom}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Type_id">Types</label>
+            <select name="Type_id">
+                <option value="">-- Tout les types --</option>
+                {% for type in types %}
+                    <option value="{{ type.id }}">{{ type.nom}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Difficulte_id">Difficulté</label>
+            <select name="Difficulte_id">
+                <option value="">-- Toutes les difficultés --</option>
+                {% for difficulte in difficultes %}
+                    <option value="{{ difficulte.id }}">{{ difficulte.nom}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">Enregistrer</button>
+        <a href="{{ path('fiches_index') }}" class="btn btn-secondary mt-3">Retour</a>
+    </form>
+</div>
+{% endblock %}

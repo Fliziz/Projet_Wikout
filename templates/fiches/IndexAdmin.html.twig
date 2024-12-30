@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Index Admin Fiches{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4">Liste des fiches</h1>
+    {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('fiches_new') }}" class="btn btn-secondary my-3">Ajouter un fiche</a>
+    {% endif %}
+    <form action="{{path('fiches_index')}}" method='post'>
+        <div>
+            <label for="recherche" class="form-label">Recherche</label>
+            <input type="text" class="form-control" name="recherche" id="recherche" placeholder="Rechercher un fiche" 
+            value="{{ recherche ?? '' }}"/>
+            <button type="submit" class="btn btn-secondary btn-sm" >Rechercher</button>
+        </div>
+        
+        <div class="form-group mt-3">
+            <label for="filtre">Filtre Par Categorie</label>
+            <select name="filtre" id="filtre">
+                <option value=0>-- Toutes les catégories --</option><!--Voir avec manel pourquoi quand je met value="" ou value=null ca ne marche pas -->
+                {% for categorie in categories %}
+                
+                    <option value="{{ categorie.id }}" {% if selectcategorie == categorie.id %}selected{% endif %}> <!-- Si la categorie selectionner est egal a l'id de la categorie (quand on fait la liste de toute les categorie (le for )) on met cette categorie en selected (selectionner)-->
+                        {{ categorie.nom}}
+                    </option>
+
+                {% endfor %}
+            </select>
+             <button type="submit" class="btn btn-secondary btn-sm" >Rechercher</button>
+             <a href="{{ path('fiches_index') }}" class="btn btn-secondary bg-danger my-3">X</a>
+        </div>
+    </form>
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Photo</th>
+                <th>Description</th>
+                <th>Catégorie</th>
+                <th>Type</th>
+                <th>Difficulté</th>
+                <th>Créateur</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fiche in fiches %}
+                <tr>
+                    <td>{{ fiche.id }}</td>
+                    <td>{{ fiche.Nom }}</td>
+                    <td>{{ fiche.Photo }}</td>
+                    <td>{{ fiche.Description }}</td>
+                    <td>{{ fiche.Categorie.nom }}</td>
+                    <td>{{ fiche.Type.nom }}</td>
+                    <td>{{ fiche.Difficulte.nom }}</td>
+                    <td>{{ fiche.Utilisateur.Pseudo }}</td>
+                    <td>
+                        <a href="{{ path('fiche_show', {id: fiche.id}) }}" class="btn btn-primary btn-sm">Show</a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('fiches_edit', {id: fiche.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        <form action="{{ path('fiches_delete', {id: fiche.id}) }}" method="post" style="display: inline;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ fiche.id) }}">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucun fiches trouvé.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

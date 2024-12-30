@@ -25,6 +25,9 @@ class Commentaires
     #[ORM\JoinColumn(nullable: false)]
     private ?utilisateurs $Utilisateur = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $DateCreation = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +65,18 @@ class Commentaires
     public function setUtilisateur(utilisateurs $Utilisateur): static
     {
         $this->Utilisateur = $Utilisateur;
+
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->DateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $DateCreation): static
+    {
+        $this->DateCreation = $DateCreation;
 
         return $this;
     }

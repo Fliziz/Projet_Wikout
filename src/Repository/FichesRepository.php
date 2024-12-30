@@ -14,6 +14,25 @@ class FichesRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Fiches::class);
+    }   
+
+    public function findByTitleAndCategory(?string $recherche, ?int $Categorie): array
+    {
+        $data = $this->createQueryBuilder('fiches'); //l'entité Articles    
+
+        // Si un mot-clé est présent, ajoute une condition LIKE pour le titre
+        if ($recherche) {
+            $data->andWhere('fiches.Nom LIKE :recherche')
+               ->setParameter('recherche', '%' . $recherche . '%');
+        }
+
+        // Si un filtre de catégorie est présent, ajoute une condition pour l'ID de catégorie
+        if ($Categorie) {
+            $data->andWhere('fiches.categorie_id = :categorie')
+               ->setParameter('categorie', $Categorie);
+        }
+
+        return $data->getQuery()->getResult();
     }
 
     //    /**

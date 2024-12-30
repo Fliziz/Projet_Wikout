@@ -24,25 +24,28 @@ class Fiches
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?utilisateurs $Utilisateur = null;
+    private ?Utilisateurs $Utilisateur = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?categories $Categorie = null;
+    private ?Categories $Categorie = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?type $Type = null;
+    private ?Type $Type = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?difficulte $Difficulte = null;
+    private ?Difficulte $Difficulte = null;
 
     /**
      * @var Collection<int, commentaire>
      */
-    #[ORM\OneToMany(targetEntity: commentaires::class, mappedBy: 'Fiche', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Commentaires::class, mappedBy: 'Fiche', orphanRemoval: true)]
     private Collection $Commentaires;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Photo = null;
 
     public function __construct()
     {
@@ -152,6 +155,18 @@ class Fiches
                 $commentaire->setFiche(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->Photo;
+    }
+
+    public function setPhoto(string $Photo): static
+    {
+        $this->Photo = $Photo;
 
         return $this;
     }
