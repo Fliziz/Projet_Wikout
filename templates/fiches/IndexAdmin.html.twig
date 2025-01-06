@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <h1 class="mb-4">Liste des fiches</h1>
     {% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('fiches_new') }}" class="btn btn-secondary my-3">Ajouter un fiche</a>
+    <a href="{{ path('fiches_newPreview') }}" class="btn btn-secondary my-3">Ajouter un fiche</a>
     {% endif %}
     <form action="{{path('fiches_index')}}" method='post'>
         <div>

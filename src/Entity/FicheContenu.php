@@ -35,13 +35,10 @@ class FicheContenu
     #[ORM\Column(type: Types::TEXT)]
     private ?string $Etude = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Fiches $Fiche = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?fichemuscles $Fiche_Muscle = null;
 
     public function getId(): ?int
     {
@@ -144,15 +141,4 @@ class FicheContenu
         return $this;
     }
 
-    public function getFicheMuscle(): ?fichemuscles
-    {
-        return $this->Fiche_Muscle;
-    }
-
-    public function setFicheMuscle(fichemuscles $Fiche_Muscle): static
-    {
-        $this->Fiche_Muscle = $Fiche_Muscle;
-
-        return $this;
-    }
 }

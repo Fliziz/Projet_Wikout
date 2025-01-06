@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Contenu de l'article sur la fiche</h1>
+    <form method="post" class="mt-4">
+
+        <div class="form-check">
+            <h1>Muscles lier a cette Fiche</h1>
+            {% for muscle in muscles %}
+                <input class="form-check-input" type="checkbox" value="{{ muscle.id }}" name="muscles">
+                <label class="form-check-label" for="muscles">
+                    {{muscle.nom}}
+                </label>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group mt-3">
+            <label for="image1">Image1</label>
+            <input type="text" name="image1" class="form-control" required>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="contenu1">Contenu1</label>
+            <textarea type="text" name="contenu1" class="form-control" required></textarea>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="contenu2">Contenu2</label>
+            <textarea type="text" name="contenu2" class="form-control" required></textarea>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="image1">Image2</label>
+            <input type="text" name="image1" class="form-control" required>
+        </div>
+
+         <div class="form-group mt-3">
+            <label for="contenu3">Contenu3</label>
+            <textarea type="text" name="contenu3" class="form-control" required></textarea>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="image3">Image3</label>
+            <input type="text" name="image3" class="form-control" required>
+        </div>
+
+        
+         <div class="form-group mt-3">
+            <label for="etude">Etude Scientifique</label>
+            <textarea type="text" name="etude" class="form-control" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">Enregistrer</button>
+        <a href="{{ path('fiches_index') }}" class="btn btn-secondary mt-3">Retour</a>
+    </form>
+</div>
+{% endblock %}
