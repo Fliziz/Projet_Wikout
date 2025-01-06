@@ -59,7 +59,6 @@ class FichesController extends AbstractController
             $fiche->setPhoto($request->request->get('Photo')); // Attribue le contunu depuis la requête
             $fiche->setDescription($request->request->get('Description')); // Attribue le contunu depuis la requête
             
-
             $fiche->setUtilisateur($utilisateursRepository->find($request->request->get('Utilisateur')));
             // Récupérer l'ID de la catégorie depuis le formulaire
             $categorieId = $request->request->get('Categorie_id');
@@ -93,37 +92,57 @@ class FichesController extends AbstractController
     }
     
     #[Route('/edit/{id}', name: 'fiches_edit', methods: ['GET', 'POST'])] // La route '/{id}/edit' permet de modifier un utilisateur existant
-    public function edit(fiches $fiche, Request $request, EntityManagerInterface $em , CategoriesRepository $categoriesRepository ): Response // La méthode edit() permet de modifier les informations d'un utilisateur existant
+    public function edit(Fiches $fiche, Request $request, EntityManagerInterface $em , CategoriesRepository $categoriesRepository , TypeRepository $typeRepository , DifficulteRepository $difficulteRepository ): Response // La méthode edit() permet de modifier les informations d'un utilisateur existant
     {
 
         $categories = $categoriesRepository->findAll();
+        $types = $typeRepository->findAll();
+        $difficultes = $difficulteRepository->findAll();
 
-        if ($request->isMethod('POST')) { // Si la requête est de type POST (formulaire soumis)
+        if ($request->isMethod('POST')) { // Si la méthode de la requête est POST (c'est-à-dire que le formulaire a été soumis)
+
+            // On récupère les données soumises dans le formulaire et on les attribue à l'entité $user
+            $fiche->setNom($request->request->get('Nom')); // Attribue le titre depuis la requête
+            $fiche->setPhoto($request->request->get('Photo')); // Attribue le contunu depuis la requête
+            $fiche->setDescription($request->request->get('Description')); // Attribue le contunu depuis la requête
             
-            $fiche->setTitre($request->request->get('titre')); // Attribue le nom de l'utilisateur depuis la requête
-            $fiche->setContenu($request->request->get('contenu')); // Attribue l'email depuis la requête
-            
+            $fiche->setEditer($request->request->get('Editeur'));
+
             // Récupérer l'ID de la catégorie depuis le formulaire
-            $categorieId = $request->request->get('id_categorie');
+            $categorieId = $request->request->get('Categorie_id');
 
             // Rechercher l'entité Categorie correspondante
             $categorie = $categoriesRepository->find($categorieId);
            
             // Attribue l'entité categorie a la variable fiche
-            $fiche->setIdCategorie($categorie); 
+            $fiche->setCategorie($categorie); 
 
-            $em->persist($fiche);
-            $em->flush(); // Sauvegarde les modifications apportées à l'utilisateur dans la base de données
 
-            return $this->redirectToRoute('fiches_index'); // Redirige vers la page de la liste des utilisateurs après modification
+             // Rechercher l'entité Types correspondante
+            $types = $typeRepository->find($request->request->get('Type_id'));
+            
+            // Attribue l'entité categorie a la variable fiche
+            $fiche->setType($types); 
+
+            // Rechercher l'entité Categorie correspondante
+            $difficultes = $difficulteRepository->find($request->request->get('Difficulte_id'));
+           
+            // Attribue l'entité categorie a la variable fiche
+            $fiche->setDifficulte($difficultes); 
+        
+            $em->persist($fiche); // Prépare l'entité $fiche à être sauvegardée dans la base de données
+            $em->flush(); // Sauvegarde réellement les données dans la base de données
+
+            return $this->redirectToRoute('fiches_index'); // Redirige l'administrateur vers la page de la liste des fiches après l'ajout
         }
 
-        return $this->render('fiches/edit.html.twig', ['fiche' => $fiche , 'categories' => $categories]); // Affiche le formulaire avec les données de l'utilisateur à modifier
+        return $this->render('fiches/edit.html.twig', ['fiche' => $fiche , 'categories' => $categories, 'types' => $types , 'difficultes' => $difficultes]); // Affiche le formulaire avec les données de l'utilisateur à modifier
     }
 
     #[Route('/{id}/delete', name:  'fiches_delete', methods: ['POST'])] // La route '/{id}/delete' permet de supprimer un fiche
     public function delete(fiches $fiche, EntityManagerInterface $em): Response // La méthode delete() permet de supprimer un fiche existant
-    {
+    {   
+
         $em->remove($fiche); // Supprime l'utilisateur de la base de données
         $em->flush(); // Sauvegarde la suppression dans la base de données
 

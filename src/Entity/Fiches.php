@@ -26,15 +26,15 @@ class Fiches
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateurs $Utilisateur = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false )]
     private ?Categories $Categorie = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Type $Type = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Difficulte $Difficulte = null;
 
@@ -46,6 +46,9 @@ class Fiches
 
     #[ORM\Column(length: 255)]
     private ?string $Photo = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $Editer = null;
 
     public function __construct()
     {
@@ -167,6 +170,18 @@ class Fiches
     public function setPhoto(string $Photo): static
     {
         $this->Photo = $Photo;
+
+        return $this;
+    }
+
+    public function getEditer(): ?string
+    {
+        return $this->Editer;
+    }
+
+    public function setEditer(?string $Editer): static
+    {
+        $this->Editer = $Editer;
 
         return $this;
     }
