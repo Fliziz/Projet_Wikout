@@ -10,13 +10,16 @@ use App\Repository\CategoriesRepository;
 use App\Repository\TypeRepository;
 use App\Repository\DifficulteRepository;
 use App\Repository\UtilisateursRepository;
+use App\Repository\MusclesRepository;
 use App\Entity\Fiches;
-use App\Entity\FichesContenu;
 use App\Entity\Categorie;
+use App\Entity\FicheContenu;
+use App\Entity\FicheMuscles;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-#[Route('/Fiches')]
+#[Route('/fiches')]
 class FichesController extends AbstractController
 {
 
@@ -44,7 +47,7 @@ class FichesController extends AbstractController
 
     #[Route('/newPreview', name: 'fiches_newPreview', methods: ['GET', 'POST'])] // La route '/new' pour afficher le formulaire de création et traiter l'envoi du formulaire
 
-    public function newPreview(Request $request, EntityManagerInterface $em , UtilisateursRepository $utilisateursRepository , CategoriesRepository $categoriesRepository , TypeRepository $typeRepository , DifficulteRepository $difficulteRepository): Response // La méthode new() gère l'affichage et la création de nouveaux fiches/ on met categorie en tant qu'attribut car on veut recupérer toute les catégories existante
+    public function newPreview(Request $request, EntityManagerInterface $em , UtilisateursRepository $utilisateursRepository , CategoriesRepository $categoriesRepository , TypeRepository $typeRepository , DifficulteRepository $difficulteRepository , SessionInterface $session): Response // La méthode new() gère l'affichage et la création de nouveaux fiches/ on met categorie en tant qu'attribut car on veut recupérer toute les catégories existante
     // ca revient au meme que faire un categories => categorieRepositorie -> findAll() (en ayant au prealable import categoriesRepositorie)
     {
 
@@ -92,28 +95,24 @@ class FichesController extends AbstractController
         return $this->render('fiches/newPreview.html.twig', ['categories' => $categories , 'types' => $types , 'difficultes' => $difficultes]); // Si la méthode est GET (formulaire de création), on affiche le formulaire
     }
 
-    #[Route('/{id}/newContenu', name: 'fiches_newContenu', methods: ['GET', 'POST'])] // La route '/new' pour afficher le formulaire de création et traiter l'envoi du formulaire
+    #[Route('/newContenu', name: 'fiches_newContenu', methods: ['GET', 'POST'])] // La route '/new' pour afficher le formulaire de création et traiter l'envoi du formulaire
 
-    public function newContenu(Request $request, EntityManagerInterface $em, MusclesRepository $musclesRepository): Response // La méthode new() gère l'affichage et la création de nouveaux fiches/ on met categorie en tant qu'attribut car on veut recupérer toute les catégories existante
-    // ca revient au meme que faire un categories => categorieRepositorie -> findAll() (en ayant au prealable import categoriesRepositorie)
+    public function newContenu(Request $request, EntityManagerInterface $em, MusclesRepository $musclesRepository,SessionInterface $session ): Response 
+    // La méthode newContenu() gère l'affichage et la création du contenue des nouvelle fiches
     {
-        // Récupérer la fiche stockée dans la session 
-        $fiche = $session->get('fiche_preview');
-        $muscles = $musclesRepository->findall();
+        
+        $fiche = $session->get('fiche_preview');// Récupérer la fiche stockée dans la session de l'utilisateur actuel
+        $muscles = $musclesRepository->findall();//Utilise la methode du répository MusclesRepository pour récupper tout le contenu de la table 
     
         if (!$fiche) {
-             // Si aucune fiche n'est trouvée en session, rediriger vers la page de création
+             // Si aucune fiche n'est trouvée en session, on est alors rediriger vers la page de création de la preview(plus de sécurité)
             return $this->redirectToRoute('fiches_newPreview');
         }
-
         if ($request->isMethod('POST')) { // Si la méthode de la requête est POST (c'est-à-dire que le formulaire a été soumis)
-            $ficheContenu = new FicheContenu(); // On crée une nouvelle instance de l'entité User
-
-            // On récupère les données soumises dans le formulaire et on les attribue à l'entité $user
-            $ficheContenu->setFiche($fiche);
-            $ficheContenu->setFicheMuscle($request->request->get('muscles')); // Attribue le contunu depuis la requête
-
-
+            
+            $ficheContenu = new FicheContenu(); // On crée une nouvelle instance de l'entité FicheContenu
+           
+            $ficheContenu->setFiche($fiche);//on definit l'attibut Fiche avec l'objet fiche qui contient notre FichePreview
             $ficheContenu->setImage1($request->request->get('image1')); // Attribue le contunu depuis la requête
             $ficheContenu->setContenu1($request->request->get('contenu1')); // Attribue le titre depuis la requête
             $ficheContenu->setContenu2($request->request->get('contenu2')); // Attribue le titre depuis la requête
@@ -122,11 +121,27 @@ class FichesController extends AbstractController
             $ficheContenu->setImage3($request->request->get('image3')); // Attribue le contunu depuis la requête
             $ficheContenu->setEtude($request->request->get('etude')); // Attribue le contunu depuis la requête
 
-            // Supprimer la fiche de la session utilisateur une fois qu'elle a été enregistrée
-            $session->remove('fiche_preview');  
             
             $em->persist($ficheContenu); // Prépare l'entité $fiche à être sauvegardée dans la base de données
             $em->persist($fiche); // Prépare l'entité $fiche à être sauvegardée dans la base de données
+        
+            $musclesSelectionnes = $request->request->all('muscles'); // Cela défini dans la variable le tableau d'id des muscles selectionné avec les chekbox
+            //Ainsi on choisit ici une methode all car il nous permet de retourner un tableau alors que get return seulement un string/bool/int/float/null
+            if ($musclesSelectionnes) {
+                foreach ($musclesSelectionnes as $muscleId) {
+                    // Récupérer le muscle par son ID
+                    $muscle = $musclesRepository->find($muscleId);
+                    if ($muscle) {
+                        $MusclesListe = new FicheMuscles();
+                        $MusclesListe->setFicheContenu($ficheContenu); // Attribue le contunu depuis la requête
+                        $MusclesListe->setMuscles($muscle);
+                        $em->persist($MusclesListe);
+                    }
+                }
+            }
+
+            $em->persist($MusclesListe);
+            
             $em->flush(); // Sauvegarde réellement les données dans la base de données
 
             // Supprimer la fiche de la session utilisateur une fois qu'elle a été enregistrée

@@ -8,8 +8,8 @@
         <div class="form-check">
             <h1>Muscles lier a cette Fiche</h1>
             {% for muscle in muscles %}
-                <input class="form-check-input" type="checkbox" value="{{ muscle.id }}" name="muscles">
-                <label class="form-check-label" for="muscles">
+                <input class="form-check-input" type="checkbox" value="{{ muscle.id }}" name="muscles[]" id="muscle_{{ muscle.id }}" >
+                <label class="form-check-label" for="muscle_{{ muscle.id }}">
                     {{muscle.nom}}
                 </label>
             {% endfor %}
@@ -17,32 +17,32 @@
         
         <div class="form-group mt-3">
             <label for="image1">Image1</label>
-            <input type="text" name="image1" class="form-control" required>
+            <input type="text" name="image1" class="form-control" >
         </div>
 
         <div class="form-group mt-3">
             <label for="contenu1">Contenu1</label>
-            <textarea type="text" name="contenu1" class="form-control" required></textarea>
+            <textarea type="text" name="contenu1" class="form-control" ></textarea>
         </div>
 
         <div class="form-group mt-3">
             <label for="contenu2">Contenu2</label>
-            <textarea type="text" name="contenu2" class="form-control" required></textarea>
+            <textarea type="text" name="contenu2" class="form-control" ></textarea>
         </div>
 
         <div class="form-group mt-3">
             <label for="image1">Image2</label>
-            <input type="text" name="image1" class="form-control" required>
+            <input type="text" name="image2" class="form-control" >
         </div>
 
          <div class="form-group mt-3">
             <label for="contenu3">Contenu3</label>
-            <textarea type="text" name="contenu3" class="form-control" required></textarea>
+            <textarea type="text" name="contenu3" class="form-control" ></textarea>
         </div>
 
         <div class="form-group mt-3">
             <label for="image3">Image3</label>
-            <input type="text" name="image3" class="form-control" required>
+            <input type="text" name="image3" class="form-control" >
         </div>
 
         

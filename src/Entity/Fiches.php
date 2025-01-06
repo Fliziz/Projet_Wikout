@@ -22,7 +22,7 @@ class Fiches
     #[ORM\Column(type: 'text')]
     private ?string $Description = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateurs $Utilisateur = null;
 
