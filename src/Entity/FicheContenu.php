@@ -35,7 +35,7 @@ class FicheContenu
     #[ORM\Column(type: Types::TEXT)]
     private ?string $Etude = null;
 
-    #[ORM\OneToOne(cascade: ['persist'])]
+    #[ORM\OneToOne(cascade : ['remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Fiches $Fiche = null;
 

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+            <form method="post">       
+                <div class="mb-3 row">
+                    <div class="col">
+                        <label for="Mot_de_Passe" class="form-label">Entrer votre nouveau mot de passe</label>
+                        <input type="password" name="Mot_de_Passe" class="form-control">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+                <a href="{{ path('utilisateurs_index') }}" class="btn btn-secondary mt-3">Retour</a>
+            </form>
+{% endblock %}

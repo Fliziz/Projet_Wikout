@@ -22,27 +22,21 @@ class Fiches
     #[ORM\Column(type: 'text')]
     private ?string $Description = null;
 
-    #[ORM\ManyToOne(cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn]
     private ?Utilisateurs $Utilisateur = null;
 
-    #[ORM\ManyToOne(cascade: ['persist'])]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false )]
     private ?Categories $Categorie = null;
 
-    #[ORM\ManyToOne(cascade: ['persist'])]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Type $Type = null;
 
-    #[ORM\ManyToOne(cascade: ['persist'])]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Difficulte $Difficulte = null;
-
-    /**
-     * @var Collection<int, commentaire>
-     */
-    #[ORM\OneToMany(targetEntity: Commentaires::class, mappedBy: 'Fiche', orphanRemoval: true)]
-    private Collection $Commentaires;
 
     #[ORM\Column(length: 255)]
     private ?string $Photo = null;
@@ -50,10 +44,6 @@ class Fiches
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $Editer = null;
 
-    public function __construct()
-    {
-        $this->Commentaire = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -128,36 +118,6 @@ class Fiches
     public function setDifficulte(difficulte $Difficulte): static
     {
         $this->Difficulte = $Difficulte;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, commentaire>
-     */
-    public function getCommentaire(): Collection
-    {
-        return $this->Commentaire;
-    }
-
-    public function addCommentaire(commentaires $commentaire): static
-    {
-        if (!$this->Commentaire->contains($commentaire)) {
-            $this->Commentaire->add($commentaire);
-            $commentaire->setFiche($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommentaire(commentaires $commentaire): static
-    {
-        if ($this->Commentaire->removeElement($commentaire)) {
-            // set the owning side to null (unless already changed)
-            if ($commentaire->getFiche() === $this) {
-                $commentaire->setFiche(null);
-            }
-        }
 
         return $this;
     }

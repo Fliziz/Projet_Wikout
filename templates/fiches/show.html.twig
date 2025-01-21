@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fiches{% endblock %}
+
+{% block body %}
+    <h1>Fiche</h1>
+<section>
+    {% for Muscle in Muscles %}
+        <div>
+            {{ Muscle.muscles.nom }}
+        </div>
+    {% endfor %}
+   <div>
+        {{ FicheContenu.id }}
+   </div>
+    <div>
+        {{ FicheContenu.Image1 }}
+   </div>
+   <div>
+        {{ FicheContenu.Contenu1 }}
+   </div>
+   <div>
+        {{ FicheContenu.Contenu2 }}
+   </div>
+   <div>
+        {{ FicheContenu.Image2 }}
+   </div>
+   <div>
+        {{ FicheContenu.Contenu3 }}
+   </div>    
+   <div>
+        {{ FicheContenu.Image3 }}
+   </div> 
+   <div>
+        {{ FicheContenu.Etude }}
+   </div>  
+   <div>
+        {% for commentaire in commentaires %}
+         <table class="table">
+         <tbody>
+            <tr>
+                <td>{{ commentaire.Utilisateur.Pseudo }}</td>
+                
+                <td>
+                    {% if app.user and app.user.id == commentaire.idUser.id %}
+                    <a href="{{ path('commentaire_edit', {'id' : Fiche.id , 'com': commentaire.id}) }}">editer</a>
+                    {% endif %}
+
+                    {% if app.user and app.user.id == commentaire.idUser.id or is_granted('ROLE_ADMIN') %}
+                    <form action="{{ path('commentaire_delete', {'Fiche' : Fiche.id ,'id': commentaire.id}) }}" method="post" style="display: inline;">
+
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ commentaire.id) }}">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">Supprimer</button>
+        
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>{{commentaire.contenu}}</td>
+            </tr>
+         </tbody>
+         </table>
+     {%endfor%}
+    </div>
+    <div>
+         <a href="{{ path('commentaire_new',{ 'id': FicheContenu.Fiche.id}) }}">Ajouter commentaire</a>
+    </div>     
+</section>          
+
+{% endblock %}

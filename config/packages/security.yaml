@@ -23,5 +23,13 @@ security:
                 path: /logout  # La route pour se déconnecter
 
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/login, roles: PUBLIC_ACCESS }
+         - { path: ^/utilisateurs, roles: ROLE_ADMIN }
+         - { path: ^/utilisateurs/new, roles: PUBLIC_ACCESS }
+         - { path: ^/fiches/newPreview roles: ROLE_ADMIN }
+         - { path: ^/fiches/newContenu, roles: ROLE_ADMIN }
+         - { path: ^/fiches/edit, roles: ROLE_ADMIN }
+
+
+

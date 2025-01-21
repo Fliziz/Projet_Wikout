@@ -49,7 +49,7 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
         return $this->render('utilisateurs/new.html.twig'); // Si la méthode est GET (formulaire de création), on affiche le formulaire
     }
 
-    
+    //a modifier 
     #[Route('/{id}/edit', name: 'utilisateurs_edit', methods: ['GET', 'POST'])] // La route '/{id}/edit' permet de modifier un utilisateur existant
     public function edit(Utilisateurs $Utilisateur, Request $request, EntityManagerInterface $em): Response // La méthode edit() permet de modifier les informations d'un utilisateur existant
     {
@@ -78,9 +78,6 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
             $Utilisateur->setGenre($request->request->get('Genre'));
 
             $Utilisateur->setDescription($request->request->get('Description')); // Modifie l'email de l'utilisateur
-
-            $Role = $request->request->get('Role', 'ROLE_utilisateurs'); // Récupère et met à jour le rôle de l'utilisateur
-            $Utilisateur->setRoles([$Role]); // Modifie le rôle de l'utilisateur
             
             $em->flush(); // Sauvegarde les modifications apportées à l'utilisateur dans la base de données
 
@@ -97,6 +94,22 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
         $em->flush(); // Sauvegarde la suppression dans la base de données
 
         return $this->redirectToRoute('utilisateurs_index'); // Redirige vers la liste des utilisateurs après suppression
+    }
+
+    #[Route('/{id}/reinitialisation', name: 'utilisateurs_reinitialisation', methods: ['GET', 'POST'])] // La route '/{id}/edit' permet de modifier un utilisateur existant
+    public function reinitialisation(Utilisateurs $Utilisateur, Request $request, EntityManagerInterface $em): Response // La méthode edit() permet de modifier les informations d'un utilisateur existant
+    {
+        if ($request->isMethod('POST')) { // Si la requête est de type POST (formulaire soumis)
+            
+            // Hachage du mot de passe avant de le sauvegarder dans la base de données
+            $hashedPassword = password_hash($request->request->get('Mot_de_Passe'), PASSWORD_BCRYPT); // Utilise bcrypt pour sécuriser le mot de passe
+            $Utilisateur->setPassword($hashedPassword); // On attribue le mot de passe haché à l'utilisateur
+            
+            $em->flush(); // Sauvegarde les modifications apportées à l'utilisateur dans la base de données
+
+            return $this->redirectToRoute('utilisateurs_index'); // Redirige vers la page de la liste des utilisateurs après modification
+        }
+        return $this->render('utilisateurs/reinitialisation.html.twig'); // Affiche le formulaire avec les données de l'utilisateur à modifier
     }
 }
 

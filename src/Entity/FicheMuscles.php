@@ -13,11 +13,11 @@ class FicheMuscles
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist'])]
+    #[ORM\OneToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Fichecontenu $Fiche_Contenu = null;
+    private ?FicheContenu $Fiche_Contenu = null;
 
-    #[ORM\OneToOne(cascade: ['persist'])]
+    #[ORM\OneToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Muscles $Muscles = null;
 

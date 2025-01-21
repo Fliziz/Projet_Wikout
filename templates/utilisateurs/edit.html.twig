@@ -24,6 +24,9 @@
                         <label for="Email" class="form-label">Email</label>
                         <input type="email" name="Email" class="form-control" value="{{ Utilisateur.Email }}">
                     </div>
+                    <div class="mb-3">
+                        <a href="{{ path('utilisateurs_reinitialisation', {id: Utilisateur.id}) }}" class="btn btn-secondary mt-3">Reinitialisation de votre mot de passe</a>
+                    </div>
                     <div class="mb-3 row justify-content-center">
                         <div class="col-3">
                             <label for="Age" class="form-label">Age</label>
@@ -45,13 +48,7 @@
                             <textarea name="description" rows="5" cols="90%" value="{{ Utilisateur.Description }}" ></textarea>
                         </div>
                     </div>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <label for="roles">Rôles</label>
-                        <select name="role" id="role">
-                            <option value="ROLE_Utilisateur" {% if 'ROLE_Utilisateur' in Utilisateur.Role %}selected{% endif %}>Utilisateur</option>
-                            <option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in Utilisateur.Role %}selected{% endif %}>Administrateur</option>
-                        </select>
-                    {% endif %}
+
                     <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
                     <a href="{{ path('utilisateurs_index') }}" class="btn btn-secondary mt-3">Retour</a>
             </form>
