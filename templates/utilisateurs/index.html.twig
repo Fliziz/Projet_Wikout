@@ -26,7 +26,7 @@
                     <td>{{ utilisateur.roles|join(', ') }}</td>
                     <td>{{ utilisateur.Nom }}</td>
                     <td>{{ utilisateur.Prenom }}</td>
-                    <td>{{ utilisateur.Age ? utilisateur.Age|date('Y-m-d') : '' }}</td>
+                    <td>{{ utilisateur.Age ? utilisateur.Age|date('d-m-Y') : '' }}</td>
                     <td>{{ utilisateur.Genre }}</td>
                     <td>{{ utilisateur.Description }}</td>
                     <td>

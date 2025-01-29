@@ -71,7 +71,7 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
             $age = $request->request->get('Age'); 
 
             // Conversion en objet DateTime
-            $dateTimeAge = $age ? \DateTime::createFromFormat('Y-m-d', $age) : null;
+            $dateTimeAge = $age ? \DateTime::createFromFormat('d-m-Y', $age) : null;
 
             $Utilisateur->setAge($dateTimeAge);
 
@@ -96,8 +96,8 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
         return $this->redirectToRoute('utilisateurs_index'); // Redirige vers la liste des utilisateurs après suppression
     }
 
-    #[Route('/{id}/reinitialisation', name: 'utilisateurs_reinitialisation', methods: ['GET', 'POST'])] // La route '/{id}/edit' permet de modifier un utilisateur existant
-    public function reinitialisation(Utilisateurs $Utilisateur, Request $request, EntityManagerInterface $em): Response // La méthode edit() permet de modifier les informations d'un utilisateur existant
+    #[Route('/{id}/reinitialisation', name: 'utilisateurs_reinitialisation', methods: ['GET', 'POST'])] 
+    public function reinitialisation(Utilisateurs $Utilisateur, Request $request, EntityManagerInterface $em): Response 
     {
         if ($request->isMethod('POST')) { // Si la requête est de type POST (formulaire soumis)
             
@@ -109,7 +109,7 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
 
             return $this->redirectToRoute('utilisateurs_index'); // Redirige vers la page de la liste des utilisateurs après modification
         }
-        return $this->render('utilisateurs/reinitialisation.html.twig'); // Affiche le formulaire avec les données de l'utilisateur à modifier
+        return $this->render('utilisateurs/reinitialisation.html.twig');
     }
 }
 

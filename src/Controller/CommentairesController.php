@@ -43,16 +43,16 @@ final class CommentairesController extends AbstractController
             // On récupère les données soumises dans le formulaire et on les attribue à l'entité $commentaires
             // $commentaires->setIdArticle($request->request->get('article'));
 
-            $commentaire->setUtilisateur(app.user); // Attribue le titre depuis la requête
+            $commentaire->setUtilisateur($this->getUser()); // GetUser() Recupere l'utilisateur actuel
             $commentaire->setFicheContenu($FicheContenu);
-            $commentaire->setContenu($request->request->get('Contenu')); // Attribue le contunu depuis la requête        
-            $commentaire->setDate($request->request->get('Date'));
+            $commentaire->setContenu($request->request->get('contenu')); // Attribue le contunu depuis la requête        
+            $commentaire->setDate(new \DateTime());
 
             $em->persist($commentaire); // Prépare l'entité $commentaires à être sauvegardée dans la base de données
             $em->flush(); // Sauvegarde réellement les données dans la base de données
             
             return $this->redirectToRoute('fiche_show', [
-                'id'=> $article->getId()
+                'id'=> $fiche->getId()
             ]);
         }
         
@@ -60,42 +60,42 @@ final class CommentairesController extends AbstractController
     }
 
 
-    #[Route('{id}/edit/{com}', name: 'commentaire_edit', methods: ['GET', 'POST'])]
-    public function edit($com,Request $request,CommentairesRepository $commentairesRepository, EntityManagerInterface $em,Articles $article): Response
+    #[Route('fiches/{id}/edit/{com}', name: 'commentaire_edit', methods: ['GET', 'POST'])]
+    public function edit($com,Request $request,CommentairesRepository $commentairesRepository, EntityManagerInterface $em,Fiches $Fiche): Response
     {
        
         // $commentairess = $commentairesRepository -> findAll();
-        $commentaires = $commentairesRepository->find($com);
+        $commentaire = $commentairesRepository->find($com);
         
         if($request->isMethod('POST')){
 
             // On récupère les données soumises dans le formulaire et on les attribue à l'entité $commentaires
             // $commentaires->setIdArticle($request->request->get('article'));
 
-            $commentaires->setContenu($request->request->get('contenu')); // Attribue le contunu depuis la requête        
+            $commentaire->setContenu($request->request->get('contenu')); // Attribue le contunu depuis la requête        
             
-            $em->persist($commentaires); // Prépare l'entité $commentaires à être sauvegardée dans la base de données
+            $em->persist($commentaire); // Prépare l'entité $commentaires à être sauvegardée dans la base de données
             $em->flush(); // Sauvegarde réellement les données dans la base de données
             
-            return $this->redirectToRoute('article_show', [
-                'id'=> $article->getId()
+            return $this->redirectToRoute('fiche_show', [
+                'id'=> $Fiche->getId()
             ]);
         }
 
         return $this->render('commentaires/edit.html.twig', [
-            'article' => $article,
-            'commentaires' => $commentaires
+            'Fiche' => $Fiche,
+            'commentaire' => $commentaire
         ]);
     }
 
-    #[Route('/{article}/commentaires/delete/{id}',name: 'commentaire_delete', methods: ['POST'])]
-    public function delete($article,Commentaires $commentaires , EntityManagerInterface $entityManager): Response 
-    {       
+    #[Route('fiches/{Fiche}/commentaires/delete/{id}',name: 'commentaire_delete', methods: ['POST'])]
+    public function delete($Fiche,Commentaires $commentaires , EntityManagerInterface $entityManager): Response 
+    {      
             $entityManager->remove($commentaires);
             $entityManager->flush();   
 
-            return $this->redirectToRoute('article_show', [
-                'id'=> $article
+            return $this->redirectToRoute('fiche_show', [
+                'id'=> $Fiche
             ], Response::HTTP_SEE_OTHER);
 
     }
