@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route; // On importe l'annotation Route
 #[Route('/utilisateurs')] // Cette annotation définit la route principale pour toutes les actions du contrôleur. Toutes les routes dans ce contrôleur commenceront par '/utilisateurss'
 class UtilisateursController extends AbstractController // Déclaration de la classe utilisateursController qui étend la classe AbstractController (la classe de base des contrôleurs Symfony)
 {
-    #[Route('/', name: 'utilisateurs_index', methods: ['GET'])] // Cette annotation définit la route pour afficher la liste des utilisateurs. 'GET' signifie que cette route répondra aux requêtes HTTP GET (les requêtes pour obtenir des données)
+    #[Route('/admin', name: 'utilisateurs_index', methods: ['GET'])] // Cette annotation définit la route pour afficher la liste des utilisateurs. 'GET' signifie que cette route répondra aux requêtes HTTP GET (les requêtes pour obtenir des données)
     public function index(UtilisateursRepository $utilisateurRepository): Response // La méthode index() récupère tous les utilisateurs de la base de données via utilisateursRepository et les affiche
     {
         $utilisateurs = $utilisateurRepository->findAll(); // Appelle la méthode findAll() du utilisateursRepository pour récupérer tous les utilisateurs dans la base de données
@@ -23,12 +23,13 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
     }
 
 
-    #[Route('/new', name: 'utilisateurs_new', methods: ['GET', 'POST'])] // La route '/new' pour afficher le formulaire de création et traiter l'envoi du formulaire
+    #[Route('/admin/new', name: 'utilisateurs_new', methods: ['GET', 'POST'])] // La route '/new' pour afficher le formulaire de création et traiter l'envoi du formulaire
     public function new(Request $request, EntityManagerInterface $em): Response // La méthode new() gère l'affichage et la création de nouveaux utilisateurs
     {
         if ($request->isMethod('POST')) { // Si la méthode de la requête est POST (c'est-à-dire que le formulaire a été soumis)
             $Utilisateur = new Utilisateurs(); // On crée une nouvelle instance de l'entité utilisateurs
 
+            $Utilisateur->setPhotoProfil("{{ asset('styles/Image/Avatar_Guest.jpg') }}"); // On définit par défault la photo de profil de l'utilisateur
             // On récupère les données soumises dans le formulaire et on les attribue à l'entité $utilisateurs
             $Utilisateur->setPseudo($request->request->get('Pseudo')); // Attribue le nom de l'utilisateur depuis la requête
             $Utilisateur->setEmail($request->request->get('Email')); // Attribue l'email depuis la requête
@@ -50,23 +51,23 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
     }
 
     //a modifier 
-    #[Route('/{id}/edit', name: 'utilisateurs_edit', methods: ['GET', 'POST'])] // La route '/{id}/edit' permet de modifier un utilisateur existant
-    public function edit(Utilisateurs $Utilisateur, Request $request, EntityManagerInterface $em): Response // La méthode edit() permet de modifier les informations d'un utilisateur existant
+    #[Route('/profile', name: 'utilisateurs_profile', methods: ['GET', 'POST'])] // La route '/profile/{id}' permet de a un utilisateur de modifier ses informations
+    public function profil( Request $request, EntityManagerInterface $em): Response // La méthode profile() permet de modifier les informations d'un utilisateur existant
     {
         if ($request->isMethod('POST')) { // Si la requête est de type POST (formulaire soumis)
             // Récupère et met à jour les informations de l'utilisateur
+            $Utilisateur = $this->getUser();
+
+            $Utilisateur->setPhotoProfil($request->request->get('Photo_Profil')); // Modifie la photo de profil de l'utilisateur
             
-            $Utilisateur->setPhotoProfil($request->request->get('Photo_Profil')); // Modifie l'email de l'utilisateur
-            
-            $Utilisateur->setPseudo($request->request->get('Pseudo')); // Modifie le nom de l'utilisateur
+            $Utilisateur->setPseudo($request->request->get('Pseudo')); // Modifie le Psedo de l'utilisateur
 
             $Utilisateur->setEmail($request->request->get('Email')); // Modifie l'email de l'utilisateur
 
-            $Utilisateur->setNom($request->request->get('Nom')); // Modifie l'email de l'utilisateur
+            $Utilisateur->setNom($request->request->get('Nom')); // Modifie le nolm de l'utilisateur
 
-            $Utilisateur->setPrenom($request->request->get('Prenom')); // Modifie l'email de l'utilisateur
+            $Utilisateur->setPrenom($request->request->get('Prenom')); // Modifie le prenom de l'utilisateur
 
-            
             // Récupération de l'âge sous forme de chaîne
             $age = $request->request->get('Age'); 
 
@@ -81,13 +82,13 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
             
             $em->flush(); // Sauvegarde les modifications apportées à l'utilisateur dans la base de données
 
-            return $this->redirectToRoute('utilisateurs_index'); // Redirige vers la page de la liste des utilisateurs après modification
+            return $this->redirectToRoute('utilisateurs_profile'); // Redirige vers la page de la liste des utilisateurs après modification
         }
 
-        return $this->render('utilisateurs/edit.html.twig', ['Utilisateur' => $Utilisateur]); // Affiche le formulaire avec les données de l'utilisateur à modifier
+        return $this->render('utilisateurs/profile.html.twig', ['Utilisateur' => $this->getUser()]); // Affiche le formulaire avec les données de l'utilisateur à modifier
     }
 
-    #[Route('/{id}/delete', name: 'utilisateurs_delete', methods: ['POST'])] // La route '/{id}/delete' permet de supprimer un utilisateur
+    #[Route('/admin/{id}/delete', name: 'utilisateurs_delete', methods: ['POST'])] // La route '/{id}/delete' permet de supprimer un utilisateur
     public function delete(Utilisateurs $Utilisateur, EntityManagerInterface $em): Response // La méthode delete() permet de supprimer un utilisateur existant
     {
         $em->remove($Utilisateur); // Supprime l'utilisateur de la base de données

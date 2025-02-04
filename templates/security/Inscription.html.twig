@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<section class="d-flex">
+
+        <figure style="width: 50%;">
+            <img src="{{ asset('styles/Image/ImageConnexion.jpg') }}" alt="Image de connexion avec des haltere sur un fond gris" width="100%" height="750px">
+        </figure>
+
+        <aside style=" width: 50%;">
+            <div class="Login-Sign">
+                <a href="Accueil.html" class="text-center"><img src="{{ asset('styles/Image/Logo Site.webp') }}" alt="Logo" width="100px"
+                        height="100px" />
+                </a>
+                <div class="connexion">
+                    <div class="text-center ">
+                        <h1 class="text-decoration-underline">Sign up to Wikout</h1>
+                    </div>
+
+                    <form method="post" class="mt-4">
+                        <div class="form-group connexion">
+                            <label for="Psuedo">Pseudonyme</label>
+                            <input type="text" id="Pseudo" name="Pseudo" class="form-control" placeholder="Musclor924" required>
+                        </div>
+                        <div class="form-group connexion">
+                            <label for="Email">Addresse Email</label>
+                            <input type="email" class="form-control"  name="Email" id="Email" aria-describedby="emailHelp"
+                                placeholder="user@gmail.com" required>
+                        </div>
+                        <div class="form-group connexion">
+                            <label for="Password">Mot de passe</label>
+                            <input type="password" class="form-control" id="Password"  name="Mot_de_Passe" required>
+                        </div>
+
+                        <div class="form-group connexion">
+                            <label for="Password">Entrez le mot de passe à nouveau </label>
+                            <input type="password" class="form-control" id="Password"  required>
+                        </div>
+                        <div class="Sign-in text-center">
+                            <div>
+                                <div>
+                                    <button type="button" class="btn btn-danger w-50" data-bs-toggle="modal"
+                                    data-bs-target="#Terms">
+                                    Inscription
+                                </button>
+                                <a href="{{ path('app_login') }}" class="btn btn-secondary ">Retour</a>
+                                </div>
+                                <div class="modal fade" id="Terms" data-bs-backdrop="static" data-bs-keyboard="false"
+                                    tabindex="-1" aria-labelledby="Termslabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5 text-dark" id="Termslabel">Conditions
+                                                    d'utlisation
+                                                </h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit numquam
+                                                unde laboriosam odio quis ipsam dolore voluptatem iusto, alias quia a,
+                                                consectetur ullam laborum enim. Aliquid ex provident quisquam dolorum!
+                                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+                                                incidunt est, libero reiciendis consectetur minus quo fugit iusto
+                                                distinctio sequi soluta ut blanditiis quis quidem impedit? Placeat quo
+                                                nulla possimus?
+                                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veniam eum in,
+                                                sequi reprehenderit eius nisi mollitia eos quae earum nemo, corporis
+                                                voluptates necessitatibus quo saepe. Omnis eligendi iste nam sint!
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum quisquam
+                                                quos pariatur quis, laborum voluptatum, id doloribus ratione praesentium
+                                                odio, veritatis architecto atque. Illum dicta, asperiores laboriosam hic
+                                                cupiditate voluptatem.
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi similique
+                                                sit mollitia eos. Vero aliquam impedit harum, aspernatur quos explicabo
+                                                esse, sequi odio, excepturi laudantium eos ab quibusdam molestiae
+                                                perspiciatis?
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
+                                                ducimus, sequi voluptate cumque quo corrupti natus vel ipsam sint labore
+                                                magni? Reprehenderit obcaecati porro praesentium nihil iste? Voluptas,
+                                                minima. Veritatis?
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore eos
+                                                debitis perspiciatis dolor, dolorum obcaecati quaerat optio suscipit
+                                                esse ipsum odio recusandae, ratione veniam quam, dolore voluptatem
+                                                laudantium doloribus cumque!
+                                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non,
+                                                reiciendis at! Doloribus voluptates veniam consequatur nam ab laborum
+                                                praesentium voluptatibus ullam corrupti libero odio nulla, in aliquid,
+                                                sit quos necessitatibus.
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam quo
+                                                nobis numquam aspernatur, deserunt eos mollitia qui labore facere fugiat
+                                                vel perspiciatis deleniti natus officiis voluptatibus possimus odit
+                                                voluptate vero.
+                                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum
+                                                reprehenderit soluta, praesentium ratione unde officiis doloribus cumque
+                                                nostrum excepturi totam rem animi nisi necessitatibus voluptates
+                                                deserunt mollitia voluptas beatae aperiam!
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Refuser</button>
+                                                <button type="submit" class="btn btn-danger">Accepter</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="FooterNavIns">
+                <div class="FootLink">
+                    © 2024 Wikout
+                </div>
+                <div class="FootLink">
+                    <a href="">Confidentialité et cookies</a>
+                </div>
+                <div class="FootLink">
+                    <a href="">Conditions d’utilisation</a>
+                </div>
+            </div>
+        </aside>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+{% endblock %}

@@ -1,0 +1,376 @@
+@import "~bootstrap/scss/bootstrap";
+
+body{
+    background-color: #27252A;
+}
+
+
+p,h1,h2,h3,h4,h5,h6,a,label{
+    color: white;
+    margin: 0;
+    text-decoration: none;
+}
+
+/*Nav*/
+.Logo{
+    height: 70px;
+    width: 70px;
+}
+
+.Barre{
+    width: 100%;
+    height: 20px;
+}
+
+.baniere{
+
+    width: 100%;
+    height: 512px;
+    background-image: url("Image/Banniere\ pour\ le\ site.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: end;
+    padding: 50px;
+}
+/*Main*/
+
+.row{
+    text-align: -webkit-center;
+}
+
+/* Fiche */
+.TitreExo{
+    text-decoration: underline 2px white;
+    margin-top : 50px;
+}
+
+#card-container{
+    width: 1265px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+
+#Fiche{
+    width: 360px;
+    height: 530px;
+    background-color: black;
+    border-radius: 17px;
+    margin: 5px;
+
+}
+
+.Fiche-Image{
+    border-top-left-radius: 17px ;
+    border-top-right-radius: 17px;
+}
+
+.Body-Fiche{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    height: 50%;
+}
+
+.Titre-Fiche{
+    width: fit-content;
+    padding: 5px;
+    border-bottom: solid white 2px;
+    margin-bottom: 10px;
+}
+
+.Info{
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0 20px 0;
+}
+
+.Type{
+    display: flex;
+    background-color: #D9D9D9;
+    width: 30%;
+    height: 40px;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.DivImage{
+    display: flex;
+    height: 100%;
+    width: 50%;
+    background-color: white;
+    align-items: center;
+    border-radius: 5px 0 0 5px;
+}
+.Image{
+    width: 100%;
+    max-height: 100%;
+    border-radius: 5px;
+}
+.TypeText{
+    display: flex;
+    height: 100%;
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+}
+
+#Type{
+    color: black;
+}
+
+.Voir-Plus{
+    border-bottom: rgba(255, 255, 255, 0.54) solid ;
+}
+
+.bouton-voir-plus{
+    position: relative;
+    top: -25px;
+    height: 40px;
+    width: 150px;
+    border-radius: 10px;
+    border: none;
+}
+
+.Voir-Plus-Fiche{
+    height: 50px;
+    width: 360px;
+    min-width: 360px;
+    background-color: #000000;
+    border-radius: 15px 15px 0 0;
+}
+
+/* Footer */
+footer{
+    width: 100%;
+    height: 530px;
+    background-color: #312D34;
+}
+.FooterForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Contact{
+    width: 50%;
+    margin: 50px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.TitreForm{
+    
+    border-bottom: white solid;
+    padding: 20px;
+
+}
+
+.FooterNav{
+    display: flex;
+}
+
+.FootLink{
+    margin: 10px;
+    text-decoration: none;
+    color: white;
+}
+
+@media screen and (min-width : 375px) and (max-width : 480px) {/* Telephone */
+    .baniere{
+        height: 160px;
+    }
+
+    #card-container{
+        width: 400px;
+    }
+    
+   #Fiche{
+    margin: 20px auto 20px auto;
+    }
+
+    .Contact{
+        width: auto;
+        font-size: 8px;
+    }
+}
+
+
+@media screen and (max-width : 900px) {/* Tablette */
+    .baniere{
+        height: 300px;
+    }
+    
+   #Fiche{
+        margin: 15px;
+    }
+
+    #card-container{
+        width: 780px;
+    }
+    
+    .Contact{
+        width: auto;
+        font-size: 8px;
+    }
+}
+
+
+
+/*Page Liste des excercice-----------------------------------------------*/
+.FiltreExo{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    width: 100%;
+    height: 40px;
+}
+.FiltreExoFleche{
+    text-align: center;
+    border: white solid ;
+    color: white;
+    height: 100%;
+    width: 40px;
+}
+.FiltreExoLettre{
+    text-align: center;
+    border: white solid ;
+    color: white;
+    height: 100%;
+    width: 40px;
+}
+
+.FiltreExoLettre:hover{
+    background-color: black;
+}
+
+.Footer-LEX{
+    height: 100px;
+}
+
+/*Page Connexion/Inscription---------------------------------------------*/
+
+
+.Login-Sign{
+    padding: 50px 108px 0 108px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+
+/*Inscription*/
+.inscription{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.button-ins{
+    text-align: start;
+    padding : 0;
+    width: 250px;
+}
+
+/* Pour la page Inscription-----------------------------------*/
+.FooterNavIns{
+    display: flex;
+    margin-top: 85px;
+}
+
+/*connexion*/
+
+.connexion{
+
+    margin: 20px 0 20px 0;
+}
+
+
+/*Button connexion*/
+
+.Sing-in{
+    display: flex;
+    flex-direction: column;
+}
+
+.forgot{
+    margin-top: 10px;
+}
+
+.forgot:hover{
+    text-decoration: underline white;
+}
+
+/* Page Reinisialitation de mot de passe----------------------------------------------*/
+
+.body-reini{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Reini{
+    height: 350px;
+    width: 700px;
+    margin: 100px;
+    padding: 30px;
+    background-color: #27252A;
+}
+
+/* Page email envoyer Reinitialisation----------------------------------------------*/
+
+.paragraphe-email{
+    margin-top: 80px;
+}
+
+
+/* Page Espace Personnel--------------------------------------------------------------*/
+
+.profil{
+    margin: 150px;
+    padding: 20px;
+    border: rgb(92, 92, 92) solid;
+    background-color:#27252A;
+    border-radius: 10px;
+}
+
+.fonctionalité{
+    margin: 0 150px 150px 150px;
+    border: rgb(92, 92, 92) solid;
+    border-radius: 10px;
+    padding: 20px;
+    background-color:#27252A;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.Fonction{
+    width: 50%;
+    height: 300px;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    background-color: red;
+    margin: 10px;
+    border-radius: 10px;   
+    padding: 10px;
+}
+
+.Fonction:hover{
+    border: #000000 2px solid;
+}
+
+/* ---------------------------------Bootsrap--------------------------------------------------------------*/

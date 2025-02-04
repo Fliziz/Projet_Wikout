@@ -3,3 +3,16 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+ApiLogin:
+    path: /api/login
+
+api_commentaireIndex:
+    path: /api/commentaire/index
+    controller: App\Controller\CommentaireController::index
+    methods: GET
+
+api_commentaireDelete:
+    path: /api/commentaire/delete/{id}
+    controller: App\Controller\CommentaireController::delete_api
+    methods: DELETE

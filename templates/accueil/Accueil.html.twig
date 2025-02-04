@@ -1,0 +1,413 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AccueilController!{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-expand-lg data-bs-theme" style=" background-color: #27252A;" data-bs-theme="dark">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="Accueil.html"><img src="Image/Logo Site.webp" alt="Logo" class="Logo" /></a>
+
+      <button class="navbar-toggler btn-light" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="Accueil.html">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="ListeExo.html">Liste des exercices</a>
+          </li>
+        </ul>
+        <div>
+          <ul class="nav col-12  align-items-center justify-content-center">
+            <img src="Image/Avatar_Guest.png" alt="Logo" class="Logo" />
+            <a href="Connexion.html" class="nav-link px-2 text-white">Inscription\Connexion</a>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <header class="baniere">
+
+    <form action="" class="Barre">
+      <input class="form-control" type="search" placeholder="Search" aria-label="Barre de recherche" />
+    </form>
+
+  </header>
+
+  <main>
+    <section>
+
+      <div class="TitreExo">
+        <h1>Dernier exercices ajoutée </h1>
+      </div>
+      <div class="container text-center " style="margin-top: 100px;">
+
+        <div class="row">
+
+          <article class="col">
+            <a href="">
+              <div class="card" id="Fiche">
+                <img src="Image/Développer couché.webp" class="Fiche-Image" height="238">
+                <div class="Body-Fiche">
+                  <div class="Titre-Fiche">
+                    <h5>Développé Couché</h5>
+                  </div>
+                  <p style="text-align: center;">Il s’agit d’un exercice de base qui sollicite l’ensemble des pecs,
+                    ainsi
+                    que
+                    les deltoïdes antérieurs et une bonne partie des triceps.</p>
+                  <div class="Info">
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Barre.jpg" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">Barre</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Pec.png" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type" style="font-size: x-small;">Pectoraux</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Biceps.png" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">1</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="col">
+            <a href="">
+              <div class="card" id="Fiche">
+                <img src="Image/Développer couché.webp" class="Fiche-Image" height="238">
+                <div class="Body-Fiche">
+                  <div class="Titre-Fiche">
+                    <h5>Développé Couché</h5>
+                  </div>
+                  <p style="text-align: center;">Il s’agit d’un exercice de base qui sollicite l’ensemble des pecs,
+                    ainsi
+                    que
+                    les deltoïdes antérieurs et une bonne partie des triceps.</p>
+                  <div class="Info">
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Barre.jpg" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">Barre</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Pec.png" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type" style="font-size: x-small;">Pectoraux</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Biceps.png" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">1</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="col">
+            <a href="">
+              <div class="card" id="Fiche">
+                <img src="Image/Développer couché.webp" class="Fiche-Image" height="238">
+                <div class="Body-Fiche">
+                  <div class="Titre-Fiche">
+                    <h5>Développé Couché</h5>
+                  </div>
+                  <p style="text-align: center;">Il s’agit d’un exercice de base qui sollicite l’ensemble des pecs,
+                    ainsi
+                    que
+                    les deltoïdes antérieurs et une bonne partie des triceps.</p>
+                  <div class="Info">
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Barre.jpg" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">Barre</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Pec.png" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type" style="font-size: x-small;">Pectoraux</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Biceps.png" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">1</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+        </div>
+        </article>
+
+        <div class="row" style="margin-top: 50px;">
+
+          <article class="col">
+            <a href="">
+              <div class="card" id="Fiche">
+                <img src="Image/Développer couché.webp" class="Fiche-Image" height="238">
+                <div class="Body-Fiche">
+                  <div class="Titre-Fiche">
+                    <h5>Développé Couché</h5>
+                  </div>
+                  <p style="text-align: center;">Il s’agit d’un exercice de base qui sollicite l’ensemble des pecs,
+                    ainsi
+                    que
+                    les deltoïdes antérieurs et une bonne partie des triceps.</p>
+                  <div class="Info">
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Barre.jpg" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">Barre</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Pec.png" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type" style="font-size: x-small;">Pectoraux</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Biceps.png" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">1</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="col">
+            <a href="">
+              <div class="card" id="Fiche">
+                <img src="Image/Développer couché.webp" class="Fiche-Image" height="238">
+                <div class="Body-Fiche">
+                  <div class="Titre-Fiche">
+                    <h5>Développé Couché</h5>
+                  </div>
+                  <p style="text-align: center;">Il s’agit d’un exercice de base qui sollicite l’ensemble des pecs,
+                    ainsi
+                    que
+                    les deltoïdes antérieurs et une bonne partie des triceps.</p>
+                  <div class="Info">
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Barre.jpg" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">Barre</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Pec.png" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type" style="font-size: x-small;">Pectoraux</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Biceps.png" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">1</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="col">
+            <a href="">
+              <div class="card" id="Fiche">
+                <img src="Image/Développer couché.webp" class="Fiche-Image" height="238">
+                <div class="Body-Fiche">
+                  <div class="Titre-Fiche">
+                    <h5>Développé Couché</h5>
+                  </div>
+                  <p style="text-align: center;">Il s’agit d’un exercice de base qui sollicite l’ensemble des pecs,
+                    ainsi
+                    que
+                    les deltoïdes antérieurs et une bonne partie des triceps.</p>
+                  <div class="Info">
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Barre.jpg" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">Barre</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Pec.png" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type" style="font-size: x-small;">Pectoraux</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="Image/Biceps.png" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">1</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+        </a>
+        </article>
+
+        <section>
+          <div class="row Voir-Plus" style="margin-top : 50px;">
+            <!--Summary et la balise pour réveler des information en l'ocurrance on revele les autres article-->
+            <article class="col ">
+              <div class="Voir-Plus-Fiche">
+
+              </div>
+            </article>
+            <article class="col">
+              <div class="Voir-Plus-Fiche">
+
+              </div>
+            </article>
+            <article class="col">
+              <div class="Voir-Plus-Fiche">
+
+              </div>
+            </article>
+          </div>
+          <button class="bouton-voir-plus"> &darr; Voir plus</button>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="FooterForm">
+      <div class="TitreForm">
+        <h1>Contactez-Nous</h1>
+      </div>
+
+      <div class="Contact">
+
+        <form action="">
+
+          <div class="row justify-content-center mb-3">
+            <div class=" col-2">
+              <label for="Name" class="form-label">Nom :</label>
+            </div>
+            <div class="col-4">
+              <input type="text" class="form-control" id="Name" placeholder="Nom">
+            </div>
+            <div class="col-2">
+              <label for="Surname" class="form-label">Prenom :</label>
+            </div>
+            <div class="col-4">
+              <input type="text" class="form-control" id="Surname" placeholder="Prenom">
+            </div>
+          </div>
+
+          <div class="row justify-content-center mb-3">
+            <div class=" col-2">
+              <label for="Email" class="form-label">Email :</label>
+            </div>
+            <div class="col-10">
+              <input type="email" class="form-control" id="Email" placeholder="name@example.com">
+            </div>
+          </div>
+
+          <div class="text-center m-0">
+            <label for="Commentaire" class="form-label">Commentaire :</label>
+            <textarea class="form-control" id="Commentaire" rows="3"></textarea>
+          </div>
+        </form>
+        <button type="submit" class="btn btn-outline-light m-3 w-25">Envoyer</button>
+      </div>
+    </div>
+    <div class="FooterNav">ù
+      <div class="FootLink">
+        © 2024 Wikout
+      </div>
+      <div class="FootLink">
+        <a href="">Confidentialité et cookies</a>
+      </div>
+      <div class="FootLink">
+        <a href="">Conditions d’utilisation</a>
+      </div>
+    </div>
+  </footer>
+{% endblock %}
