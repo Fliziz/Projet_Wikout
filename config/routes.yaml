@@ -9,10 +9,15 @@ ApiLogin:
 
 api_commentaireIndex:
     path: /api/commentaire/index
-    controller: App\Controller\CommentaireController::index
+    controller: App\Controller\CommentairesController::index_api
     methods: GET
 
 api_commentaireDelete:
     path: /api/commentaire/delete/{id}
-    controller: App\Controller\CommentaireController::delete_api
+    controller: App\Controller\CommentairesController::delete_api
     methods: DELETE
+
+api_contactIndex:
+    path: /api/contact/index
+    controller: App\Controller\ContactController::index_api
+    methods: GET

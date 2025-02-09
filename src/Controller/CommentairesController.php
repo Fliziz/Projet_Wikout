@@ -18,17 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class CommentairesController extends AbstractController
 {
-    #[Route('commentaire/index',name: 'commentaires_index', methods: ['GET'])]
-    public function index(CommentairesRepository $commentairesRepository): Response
-    {
-        $commentaires = $commentairesRepository->findAll();
-
-        return $this->render('commentaires/index.html.twig', [
-            'commentaires' => $commentaires,
-        ]);
-
-    }
-
+ 
     #[Route('fiches/{id}/commentaire/new',name: 'commentaire_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em, Fiches $fiche, FicheContenuRepository $ficheContenuRepository): Response
     {   
@@ -100,14 +90,32 @@ final class CommentairesController extends AbstractController
 
     }
 
+    #[Route('admin/api/commentaire/index',name: 'api_commentaires_index', methods: ['GET'])]
+    public function index_api(CommentairesRepository $commentairesRepository): JsonResponse
+    {
+        $commentaires = $commentairesRepository->findAll();
 
-    // #[Route(name: 'api_commentaire_delete', methods: ['DELETE'])]
-    // public function delete_api(Commentaires $commentaires , EntityManagerInterface $entityManager): Response 
-    // {       
-    //         $entityManager->remove($commentaires);
-    //         $entityManager->flush();   
+        $data = [];
+        foreach ($commentaires as $commentaire) {
+            $data[] = [
+                'id' => $commentaire->getId(),
+                'utilisateur' => $commentaire->getUtilisateur()->getEmail(), // Assurez-vous que getEmail() existe
+                'contenu' => $commentaire->getContenu(),
+                'date' => $commentaire->getDate()->format('Y-m-d'),
+            ];
+        }
 
-    //         return new JsonResponse(['status' => 'User deleted'], JsonResponse::HTTP_OK);
-    // }
+        return new JsonResponse($data, JsonResponse::HTTP_OK);
+    }
+
+    #[Route('admin/api/commentaire/delete/{id}',name: 'api_commentaire_delete', methods: ['DELETE'])]
+    public function delete_api(Commentaires $commentaires , EntityManagerInterface $entityManager): JsonResponse 
+     {       
+
+             $entityManager->remove($commentaires);
+             $entityManager->flush();   
+
+             return new JsonResponse(['status' => 'User deleted'], JsonResponse::HTTP_OK);
+     }
 }
 
