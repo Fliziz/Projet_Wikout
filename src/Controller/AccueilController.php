@@ -2,17 +2,20 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\FichesRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AccueilController extends AbstractController
 {
     #[Route('', name: 'accueil')]
-    public function index(): Response
+    public function index(FichesRepository $fichesRepository): Response
     {
+        $fiches = $fichesRepository->findAll();
+
         return $this->render('accueil/Accueil.html.twig', [
-            'controller_name' => 'AccueilController',
+            'fiches' => $fiches,
         ]);
     }
 }

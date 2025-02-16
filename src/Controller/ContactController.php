@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ContactController extends AbstractController
 {
-    #[Route('/contact', name: 'app_contact')]
+    #[Route('/admin/contact', name: 'app_contact')]
     public function index(): Response
     {
         return $this->render('contact/index.html.twig', [

@@ -17,8 +17,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 final class CommentairesController extends AbstractController
-{
- 
+{   
+    
+    #[Route('commentaire/index', name: 'commentaires_index')]
+    public function index(CommentairesRepository $commentairesRepository): Response
+    {
+        $commentaires = $commentairesRepository->findAll();
+
+        return $this->render('commentaires/index.html.twig', [
+            'commentaires' => $commentaires,
+        ]);
+    }
+
     #[Route('fiches/{id}/commentaire/new',name: 'commentaire_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em, Fiches $fiche, FicheContenuRepository $ficheContenuRepository): Response
     {   

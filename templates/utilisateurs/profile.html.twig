@@ -1,58 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-            {# <form method="post">
-                   <div class="w-100 text-center">
-                        <img src="{{ Utilisateur.getPhotoProfil() }}" alt="">
-                    </div>
-                       
-                    <div class="mb-3 row">
-                        <div class="col">
-                            <label for="Pseudo" class="form-label">Pseudo</label>
-                             <input type="text"  name="Pseudo" class="form-control" value="{{ Utilisateur.Pseudo }}">
-                        </div>
-                        <div class="col">
-                            <label for="Nom" class="form-label">Nom</label>
-                            <input type="text" name="Nom" class="form-control" value="{{ Utilisateur.Nom }}">
-                        </div>
-                        <div class="col">
-                            <label for="Prenom" class="form-label">Prenom</label>
-                            <input type="text" name="Prenom" class="form-control" value="{{ Utilisateur.Prenom }}">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="Email" class="form-label">Email</label>
-                        <input type="email" name="Email" class="form-control" value="{{ Utilisateur.Email }}">
-                    </div>
-                    <div class="mb-3">
-                        <a href="{{ path('utilisateurs_reinitialisation', {id: Utilisateur.id}) }}" class="btn btn-secondary mt-3">Reinitialisation de votre mot de passe</a>
-                    </div>
-                    <div class="mb-3 row justify-content-center">
-                        <div class="col-3">
-                            <label for="Age" class="form-label">Age</label>
-                            <input type ="date" name="Age" class="form-control" value="{{ Utilisateur.Age ? Utilisateur.Age|date('Y-m-d') : '' }}">
-                        </div>
-                        <div class="col-3">
-                            <label for="Genre" class="form-label">Genre</label>
-                            <select class="form-control" name="Genre" id="Genre">
-                                <option value="">--</option>
-                                <option value="Homme" {% if 'Homme' in Utilisateur.Genre %}selected{% endif %}>Homme</option>
-                                <option value="Femme"{% if 'Femme' in Utilisateur.Genre %}selected{% endif %}>Femme</option>
-                                <option value="Autre"{% if 'Autre' in Utilisateur.Genre %}selected{% endif %}>Autre</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea name="description" rows="5" cols="90%" value="{{ Utilisateur.Description }}" ></textarea>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
-                    <a href="{{ path('utilisateurs_index') }}" class="btn btn-secondary mt-3">Retour</a>
-            </form> #}
-
     <main>
             <section>
                 <div class="profil">

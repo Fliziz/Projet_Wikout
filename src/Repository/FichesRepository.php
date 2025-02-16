@@ -28,8 +28,8 @@ class FichesRepository extends ServiceEntityRepository
 
         // Si un filtre de catégorie est présent, ajoute une condition pour l'ID de catégorie
         if ($Categorie) {
-            $data->andWhere('fiches.categorie_id = :categorie')
-               ->setParameter('categorie', $Categorie);
+            $data->andWhere('fiches.Categorie = :Categorie')
+               ->setParameter('Categorie', $Categorie);
         }
 
         return $data->getQuery()->getResult();

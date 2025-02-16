@@ -48,7 +48,7 @@ class FichesController extends AbstractController
         ]);
     }
 
-    #[Route('/newPreview', name: 'fiches_newPreview', methods: ['GET', 'POST'])] // La route '/newPreview' pour afficher le formulaire de création et traiter l'envoi du formulaire
+    #[Route('/admin/newPreview', name: 'fiches_newPreview', methods: ['GET', 'POST'])] // La route '/newPreview' pour afficher le formulaire de création et traiter l'envoi du formulaire
 
     public function newPreview(Request $request, EntityManagerInterface $em , UtilisateursRepository $utilisateursRepository , CategoriesRepository $categoriesRepository , TypeRepository $typeRepository , DifficulteRepository $difficulteRepository ): Response 
     // La méthode newPreview() permet de crée les petites fiches ou les utilisateurs peuvent cliquer dessus pour accéder au contenu
@@ -102,7 +102,7 @@ class FichesController extends AbstractController
         return $this->render('fiches/newPreview.html.twig', ['categories' => $categories , 'types' => $types , 'difficultes' => $difficultes]);
     }
 
-    #[Route('{id}/newContenu', name: 'fiches_newContenu', methods: ['GET', 'POST'])] // La route '/new' pour afficher le formulaire de création et traiter l'envoi du formulaire
+    #[Route('/admin/{id}/newContenu', name: 'fiches_newContenu', methods: ['GET', 'POST'])] // La route '/new' pour afficher le formulaire de création et traiter l'envoi du formulaire
 
     public function newContenu(Fiches $fiche ,Request $request, EntityManagerInterface $em, MusclesRepository $musclesRepository): Response 
     // La méthode newContenu() gère l'affichage et la création du contenue des nouvelle fiches
@@ -149,7 +149,7 @@ class FichesController extends AbstractController
         return $this->render('fiches/newContenu.html.twig',['muscles' => $muscles]); // Si la méthode est GET (formulaire de création), on affiche le formulaire
     }
     
-    #[Route('/edit/{id}', name: 'fiches_edit', methods: ['GET', 'POST'])] // La route '/{id}/edit' permet de modifier une fiches existante
+    #[Route('/admin/edit/{id}', name: 'fiches_edit', methods: ['GET', 'POST'])] // La route '/{id}/edit' permet de modifier une fiches existante
     public function edit(Fiches $fiche, Request $request, EntityManagerInterface $em , CategoriesRepository $categoriesRepository , TypeRepository $typeRepository , DifficulteRepository $difficulteRepository ): Response 
     // La méthode edit() permet de modifier les informations d'une fiches existante
     //Ici l'objet $fiche represente la fiche avec l'id qui est dans l'url(symfony lie fiche automatiquement a l'id du lien)
@@ -193,7 +193,7 @@ class FichesController extends AbstractController
         return $this->render('fiches/edit.html.twig', ['fiche' => $fiche , 'categories' => $categories, 'types' => $types , 'difficultes' => $difficultes]); 
     }
 
-    #[Route('/{id}/delete', name:  'fiches_delete', methods: ['POST'])] // La route '/{id}/delete' permet de supprimer un fiche
+    #[Route('/{id}/admin/delete', name:  'fiches_delete', methods: ['POST'])] // La route '/{id}/delete' permet de supprimer un fiche
     public function delete(Fiches $fiche, FicheContenuRepository $ficheContenuRepository , FicheMusclesRepository $FMRepository ,EntityManagerInterface $em): Response // La méthode delete() permet de supprimer un fiche existant
     {   
         $ficheContenu = $ficheContenuRepository->findOneBy(['Fiche' => $fiche ]);

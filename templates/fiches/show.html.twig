@@ -3,36 +3,70 @@
 {% block title %}Fiches{% endblock %}
 
 {% block body %}
-    <h1>Fiche</h1>
+<nav class="navbar navbar-expand-lg data-bs-theme" style=" background-color: #27252A;" data-bs-theme="dark">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="{{ path('accueil') }}"><img src="{{ asset('styles/Image/Logo Site.webp') }}" alt="Logo" class="Logo" /></a>
+
+      <button class="navbar-toggler btn-light" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ path('accueil') }}">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="">Liste des exercices</a>
+          </li>
+        </ul>
+        <div>
+          <ul class="d-flex flex-row nav col-12  align-items-center justify-content-center">
+              {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('utilisateurs_index') }}" class="nav-link px-2 text-white">Espace Admin</a>
+              {% endif %}
+              {% if app.user  %}
+                <img src="{{ asset(app.user.PhotoProfil) }}" alt="Logo" class="Logo" />
+                <a href="{{ path('utilisateurs_profile') }}" class="nav-link px-2 text-white">{{ app.user.pseudo }}</a>
+              {% else %}
+                <img src="{{ asset('styles/Image/Avatar_Guest.png') }}" alt="Logo" class="Logo" />
+                <a href="{{ path('app_login') }}" class="nav-link px-2 text-white">Inscription\Connexion</a>
+              {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
 <section>
     {% for Muscle in Muscles %}
         <div>
-            {{ Muscle.muscles.nom }}
+            {{ Muscle.muscles.nom }}</p>
         </div>
     {% endfor %}
-   <div>
-        {{ FicheContenu.id }}
-   </div>
     <div>
-        {{ FicheContenu.Image1 }}
+        <img src="{{ FicheContenu.Image1 is not empty ? asset(FicheContenu.Image1) : '#'}}" alt="premiere image" class="premiere image" />
    </div>
    <div>
-        {{ FicheContenu.Contenu1 }}
+        <p>{{ FicheContenu.Contenu1 }}</p>
    </div>
    <div>
-        {{ FicheContenu.Contenu2 }}
+        <p>{{ FicheContenu.Contenu2 }}</p>
    </div>
    <div>
-        {{ FicheContenu.Image2 }}
+        <img src="{{ FicheContenu.Image2 is not empty ? asset(FicheContenu.Image2) : '#' }}" alt="premiere image" class="premiere image" />
    </div>
    <div>
-        {{ FicheContenu.Contenu3 }}
+        <p>{{ FicheContenu.Contenu3 }}</p>
    </div>    
    <div>
-        {{ FicheContenu.Image3 }}
+        <img src="{{ FicheContenu.Image3 is not empty ? asset(FicheContenu.Image3) : '#' }}" alt="premiere image" class="premiere image" />
    </div> 
    <div>
-        {{ FicheContenu.Etude }}
+        <h1>Etude Scientifique</h1>
+        <p>{{ FicheContenu.Etude }}</p>
    </div>  
    <div>
         {% for commentaire in commentaires %}

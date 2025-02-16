@@ -38,7 +38,7 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
             $hashedPassword = password_hash($request->request->get('Mot_de_Passe'), PASSWORD_BCRYPT); // Utilise bcrypt pour sécuriser le mot de passe
             $Utilisateur->setPassword($hashedPassword); // On attribue le mot de passe haché à l'utilisateur
 
-            $role = $request->request->get('role', 'ROLE_utilisateur'); // On récupère le rôle du formulaire. Par défaut, il sera 'ROLE_utilisateurs'
+            $role = $request->request->get('role', 'ROLE_Utilisateur'); // On récupère le rôle du formulaire. Par défaut, il sera 'ROLE_utilisateurs'
             $Utilisateur->setRoles([$role]); // Attribue le rôle à l'utilisateur
 
             $em->persist($Utilisateur); // Prépare l'entité $utilisateurs à être sauvegardée dans la base de données
