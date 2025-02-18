@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController; // Importation
 use Symfony\Component\HttpFoundation\Request; // Importation de la classe Request qui gère les données envoyées dans la requête HTTP
 use Symfony\Component\HttpFoundation\Response; // Importation de la classe Response qui est utilisée pour envoyer une réponse HTTP
 use Symfony\Component\Routing\Annotation\Route; // On importe l'annotation Route, qui permet de définir des routes pour ce contrôleur
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
  
 #[Route('/utilisateurs')] // Cette annotation définit la route principale pour toutes les actions du contrôleur. Toutes les routes dans ce contrôleur commenceront par '/utilisateurss'
 class UtilisateursController extends AbstractController // Déclaration de la classe utilisateursController qui étend la classe AbstractController (la classe de base des contrôleurs Symfony)
@@ -24,9 +26,21 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
 
 
     #[Route('/admin/new', name: 'utilisateurs_new', methods: ['GET', 'POST'])] // La route '/new' pour afficher le formulaire de création et traiter l'envoi du formulaire
-    public function new(Request $request, EntityManagerInterface $em): Response // La méthode new() gère l'affichage et la création de nouveaux utilisateurs
-    {
+    public function new(CsrfTokenManagerInterface $csrfTokenManager,Request $request, EntityManagerInterface $em): Response // La méthode new() gère l'affichage et la création de nouveaux utilisateurs
+    {   
+
+        $csrfToken = $csrfTokenManager->getToken('fiches_edit')->getValue();
+
         if ($request->isMethod('POST')) { // Si la méthode de la requête est POST (c'est-à-dire que le formulaire a été soumis)
+
+            // Récupérer et vérifier le token CSRF
+            $token = $request->request->get('_csrf_token');
+            
+            if (!$csrfTokenManager->isTokenValid(new CsrfToken('fiches_edit', $token))) {
+
+                throw new AccessDeniedHttpException('Le token CSRF est invalide.');
+            }
+
             $Utilisateur = new Utilisateurs(); // On crée une nouvelle instance de l'entité utilisateurs
 
             $Utilisateur->setPhotoProfil("{{ asset('styles/Image/Avatar_Guest.jpg') }}"); // On définit par défault la photo de profil de l'utilisateur
@@ -47,15 +61,28 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
             return $this->redirectToRoute('utilisateurs_index'); // Redirige l'utilisateur vers la page de la liste des utilisateurs après l'ajout
         }
 
-        return $this->render('utilisateurs/new.html.twig'); // Si la méthode est GET (formulaire de création), on affiche le formulaire
+        return $this->render('utilisateurs/new.html.twig', [
+            'csrf_token' => $csrfToken // Passe le token CSRF à la vue
+        ]); // Si la méthode est GET (formulaire de création), on affiche le formulaire
     }
 
     //a modifier 
     #[Route('/profile', name: 'utilisateurs_profile', methods: ['GET', 'POST'])] // La route '/profile/{id}' permet de a un utilisateur de modifier ses informations
-    public function profil( Request $request, EntityManagerInterface $em): Response // La méthode profile() permet de modifier les informations d'un utilisateur existant
-    {
+    public function profil(CsrfTokenManagerInterface $csrfTokenManager,Request $request, EntityManagerInterface $em): Response // La méthode profile() permet de modifier les informations d'un utilisateur existant
+    {   
+        $csrfToken = $csrfTokenManager->getToken('fiches_edit')->getValue();
+
         if ($request->isMethod('POST')) { // Si la requête est de type POST (formulaire soumis)
             // Récupère et met à jour les informations de l'utilisateur
+
+            // Récupérer et vérifier le token CSRF
+            $token = $request->request->get('_csrf_token');
+            
+            if (!$csrfTokenManager->isTokenValid(new CsrfToken('fiches_edit', $token))) {
+
+                throw new AccessDeniedHttpException('Le token CSRF est invalide.');
+            }
+
             $Utilisateur = $this->getUser();
 
             $Utilisateur->setPhotoProfil($request->request->get('Photo_Profil')); // Modifie la photo de profil de l'utilisateur
@@ -72,7 +99,7 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
             $age = $request->request->get('Age'); 
 
             // Conversion en objet DateTime
-            $dateTimeAge = $age ? \DateTime::createFromFormat('d-m-Y', $age) : null;
+            $dateTimeAge = $age ? \DateTime::createFromFormat('Y-m-d', $age) : null;
 
             $Utilisateur->setAge($dateTimeAge);
 
@@ -85,7 +112,10 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
             return $this->redirectToRoute('utilisateurs_profile'); // Redirige vers la page de la liste des utilisateurs après modification
         }
 
-        return $this->render('utilisateurs/profile.html.twig', ['Utilisateur' => $this->getUser()]); // Affiche le formulaire avec les données de l'utilisateur à modifier
+        return $this->render('utilisateurs/profile.html.twig', [
+            'Utilisateur' => $this->getUser(),
+            'csrf_token' => $csrfToken // Passe le token CSRF à la vue
+    ]); // Affiche le formulaire avec les données de l'utilisateur à modifier
     }
 
     #[Route('/admin/{id}/delete', name: 'utilisateurs_delete', methods: ['POST'])] // La route '/{id}/delete' permet de supprimer un utilisateur
@@ -97,20 +127,5 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
         return $this->redirectToRoute('utilisateurs_index'); // Redirige vers la liste des utilisateurs après suppression
     }
 
-    #[Route('/{id}/reinitialisation', name: 'utilisateurs_reinitialisation', methods: ['GET', 'POST'])] 
-    public function reinitialisation(Utilisateurs $Utilisateur, Request $request, EntityManagerInterface $em): Response 
-    {
-        if ($request->isMethod('POST')) { // Si la requête est de type POST (formulaire soumis)
-            
-            // Hachage du mot de passe avant de le sauvegarder dans la base de données
-            $hashedPassword = password_hash($request->request->get('Mot_de_Passe'), PASSWORD_BCRYPT); // Utilise bcrypt pour sécuriser le mot de passe
-            $Utilisateur->setPassword($hashedPassword); // On attribue le mot de passe haché à l'utilisateur
-            
-            $em->flush(); // Sauvegarde les modifications apportées à l'utilisateur dans la base de données
-
-            return $this->redirectToRoute('utilisateurs_index'); // Redirige vers la page de la liste des utilisateurs après modification
-        }
-        return $this->render('utilisateurs/reinitialisation.html.twig');
-    }
 }
 

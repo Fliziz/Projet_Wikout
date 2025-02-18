@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Annotation\Route; // On importe l'annotation Route
 use Symfony\Component\HttpFoundation\Response; // On importe la classe Response, qui est utilisée pour envoyer des réponses HTTP
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController; // On importe la classe de base AbstractController de Symfony, qui permet d'utiliser les méthodes de base pour un contrôleur
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils; // On importe AuthenticationUtils pour gérer l'authentification et récupérer des informations sur l'utilisateur connecté (erreurs de connexion, dernier nom d'utilisateur)
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 class SecurityController extends AbstractController // Déclaration de la classe SecurityController qui étend AbstractController, ce qui permet d'hériter de nombreuses méthodes utiles pour le contrôleur
 {
@@ -31,12 +33,24 @@ class SecurityController extends AbstractController // Déclaration de la classe
     public function logout(): void {} // Méthode vide pour gérer la déconnexion. Symfony gère automatiquement la déconnexion, donc cette méthode ne nécessite pas de code
 
     #[Route('/inscription', name: 'inscription', methods: ['GET', 'POST'])] 
-    public function inscription(Request $request, EntityManagerInterface $em): Response 
+    public function inscription(CsrfTokenManagerInterface $csrfTokenManager,Request $request, EntityManagerInterface $em): Response 
     {
+
+        $csrfToken = $csrfTokenManager->getToken('inscription')->getValue();
+
         if ($request->isMethod('POST')) { // Si la méthode de la requête est POST (c'est-à-dire que le formulaire a été soumis)
+
+            // Récupérer et vérifier le token CSRF
+            $token = $request->request->get('_csrf_token');
+            
+            if (!$csrfTokenManager->isTokenValid(new CsrfToken('inscription', $token))) {
+
+                throw new AccessDeniedHttpException('Le token CSRF est invalide.');
+            }
+
             $Utilisateur = new Utilisateurs(); // On crée une nouvelle instance de l'entité utilisateurs
 
-            $Utilisateur->setPhotoProfil("styles/Image/Avatar_Guest.jpg"); // On définit par défault la photo de profil de l'utilisateur
+            $Utilisateur->setPhotoProfil("{{ asset('styles/Image/Avatar_Guest.jpg') }}"); // On définit par défault la photo de profil de l'utilisateur
             // On récupère les données soumises dans le formulaire et on les attribue à l'entité $utilisateurs
             $Utilisateur->setPseudo($request->request->get('Pseudo')); // Attribue le nom de l'utilisateur depuis la requête
             $Utilisateur->setEmail($request->request->get('Email')); // Attribue l'email depuis la requête
@@ -54,7 +68,9 @@ class SecurityController extends AbstractController // Déclaration de la classe
             return $this->redirectToRoute('app_login'); // Redirige l'utilisateur vers la page de la liste des utilisateurs après l'ajout
         }
 
-        return $this->render('security/Inscription.html.twig'); // Si la méthode est GET (formulaire de création), on affiche le formulaire
+        return $this->render('security/Inscription.html.twig', [
+            'csrf_token' => $csrfToken, // Passe le token CSRF à la vue pour l'utiliser dans le formulaire
+        ]); // Si la méthode est GET (formulaire de création), on affiche le formulaire
     }
 }
 

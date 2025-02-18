@@ -41,7 +41,8 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/login, roles: PUBLIC_ACCESS }
-         - { path: ^/utilisateurs, roles: ROLE_ADMIN }
+         - { path: ^/utilisateurs, roles: IS_AUTHENTICATED_FULLY }
+         - { path: ^/commentaire, roles: IS_AUTHENTICATED_FULLY }
          - { path: ^/fiches, roles: PUBLIC_ACCESS}
          - { path: ^/utilisateurs/new, roles: PUBLIC_ACCESS }
          - { path: ^/profile, roles: ROLE_Utilisateur }

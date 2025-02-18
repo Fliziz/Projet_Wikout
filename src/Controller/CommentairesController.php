@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 
 final class CommentairesController extends AbstractController
@@ -25,18 +27,27 @@ final class CommentairesController extends AbstractController
         $commentaires = $commentairesRepository->findAll();
 
         return $this->render('commentaires/index.html.twig', [
-            'commentaires' => $commentaires,
+            'commentaires' => $commentaires
         ]);
     }
 
     #[Route('fiches/{id}/commentaire/new',name: 'commentaire_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em, Fiches $fiche, FicheContenuRepository $ficheContenuRepository): Response
+    public function new(CsrfTokenManagerInterface $csrfTokenManager,Request $request, EntityManagerInterface $em, Fiches $fiche, FicheContenuRepository $ficheContenuRepository): Response
     {   
         
         $FicheContenu = $ficheContenuRepository->findOneBy(['Fiche' => $fiche]);
         
+        $csrfToken = $csrfTokenManager->getToken('fiches_edit')->getValue();
 
         if($request->isMethod('POST')){
+
+            // Récupérer et vérifier le token CSRF
+            $token = $request->request->get('_csrf_token');
+            
+            if (!$csrfTokenManager->isTokenValid(new CsrfToken('fiches_edit', $token))) {
+
+                throw new AccessDeniedHttpException('Le token CSRF est invalide.');
+            }
 
             $commentaire = new Commentaires(); // On crée une nouvelle instance de l'entité commentaires
 
@@ -56,18 +67,31 @@ final class CommentairesController extends AbstractController
             ]);
         }
         
-        return $this->render('commentaires/new.html.twig', ["fiche" => $fiche]);
+        return $this->render('commentaires/new.html.twig', [
+            "fiche" => $fiche,
+            'csrf_token' => $csrfToken // Passe le token CSRF à la vue pour l'utiliser dans le formulaire
+    ]);
     }
 
 
-    #[Route('fiches/{id}/edit/{com}', name: 'commentaire_edit', methods: ['GET', 'POST'])]
-    public function edit($com,Request $request,CommentairesRepository $commentairesRepository, EntityManagerInterface $em,Fiches $Fiche): Response
+    #[Route('fiches/{id}/commentaire/edit/{com}', name: 'commentaire_edit', methods: ['GET', 'POST'])]
+    public function edit(CsrfTokenManagerInterface $csrfTokenManager,$com,Request $request,CommentairesRepository $commentairesRepository, EntityManagerInterface $em,Fiches $Fiche): Response
     {
        
         // $commentairess = $commentairesRepository -> findAll();
         $commentaire = $commentairesRepository->find($com);
         
+        $csrfToken = $csrfTokenManager->getToken('fiches_edit')->getValue();
+        
         if($request->isMethod('POST')){
+            
+            // Récupérer et vérifier le token CSRF
+            $token = $request->request->get('_csrf_token');
+            
+            if (!$csrfTokenManager->isTokenValid(new CsrfToken('fiches_edit', $token))) {
+
+                throw new AccessDeniedHttpException('Le token CSRF est invalide.');
+            }
 
             // On récupère les données soumises dans le formulaire et on les attribue à l'entité $commentaires
             // $commentaires->setIdArticle($request->request->get('article'));
@@ -84,7 +108,8 @@ final class CommentairesController extends AbstractController
 
         return $this->render('commentaires/edit.html.twig', [
             'Fiche' => $Fiche,
-            'commentaire' => $commentaire
+            'commentaire' => $commentaire,
+            'csrf_token' => $csrfToken // Passe le token CSRF à la vue pour l'utiliser dans le formulaire
         ]);
     }
 
@@ -111,7 +136,7 @@ final class CommentairesController extends AbstractController
                 'id' => $commentaire->getId(),
                 'utilisateur' => $commentaire->getUtilisateur()->getEmail(), // Assurez-vous que getEmail() existe
                 'contenu' => $commentaire->getContenu(),
-                'date' => $commentaire->getDate()->format('Y-m-d'),
+                'date' => $commentaire->getDate()->format('Y-m-d')
             ];
         }
 

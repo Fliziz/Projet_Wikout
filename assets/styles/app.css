@@ -1,5 +1,3 @@
-@import "~bootstrap/scss/bootstrap";
-
 body{
     background-color: #27252A;
 }
@@ -26,7 +24,7 @@ p,h1,h2,h3,h4,h5,h6,a,label{
 
     width: 100%;
     height: 512px;
-    background-image: url("Image/Banniere\ pour\ le\ site.jpg");
+    background-image: url("Image/Bannierepourlesite.jpg");
     background-size: 100%;
     background-repeat: no-repeat;
     display: flex;
@@ -287,7 +285,7 @@ footer{
 /* Pour la page Inscription-----------------------------------*/
 .FooterNavIns{
     display: flex;
-    margin-top: 85px;
+    margin-top: 40px;
 }
 
 /*connexion*/

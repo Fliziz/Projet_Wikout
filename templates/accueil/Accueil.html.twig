@@ -20,7 +20,7 @@
             <a class="nav-link active" aria-current="page" href="{{ path('accueil') }}">Accueil</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="">Liste des exercices</a>
+            <a class="nav-link active" href="{{ path('liste_fiches') }}">Liste des exercices</a>
           </li>
         </ul>
         <div>
@@ -31,10 +31,15 @@
               {% if app.user  %}
                 <img src="{{ asset(app.user.PhotoProfil) }}" alt="Logo" class="Logo" />
                 <a href="{{ path('utilisateurs_profile') }}" class="nav-link px-2 text-white">{{ app.user.pseudo }}</a>
+                <a href="{{ path('app_logout') }}" class="nav-link border-1 border-white">
+                  <img src="{{ asset("styles/Image/logout.png") }}" alt="logo de déconnetion" width = "20px" class="ms-2"/>
+                </a>
+                
               {% else %}
                 <img src="{{ asset('styles/Image/Avatar_Guest.png') }}" alt="Logo" class="Logo" />
                 <a href="{{ path('app_login') }}" class="nav-link px-2 text-white">Inscription\Connexion</a>
               {% endif %}
+
           </ul>
         </div>
       </div>

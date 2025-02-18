@@ -8,6 +8,8 @@
     <h1>Nouveau commentaire</h1>
     <form method="post" class="mt-4">
 
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+        
         <div class="form-group mt-3">
             <label for="contenu">Contenu</label>
             <input type="contenu" id="contenu" name="contenu" class="form-control" required>

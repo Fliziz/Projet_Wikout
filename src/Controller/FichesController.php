@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 
 #[Route('/fiches')]
@@ -50,7 +52,7 @@ class FichesController extends AbstractController
 
     #[Route('/admin/newPreview', name: 'fiches_newPreview', methods: ['GET', 'POST'])] // La route '/newPreview' pour afficher le formulaire de création et traiter l'envoi du formulaire
 
-    public function newPreview(Request $request, EntityManagerInterface $em , UtilisateursRepository $utilisateursRepository , CategoriesRepository $categoriesRepository , TypeRepository $typeRepository , DifficulteRepository $difficulteRepository ): Response 
+    public function newPreview(CsrfTokenManagerInterface $csrfTokenManager,Request $request, EntityManagerInterface $em , UtilisateursRepository $utilisateursRepository , CategoriesRepository $categoriesRepository , TypeRepository $typeRepository , DifficulteRepository $difficulteRepository ): Response 
     // La méthode newPreview() permet de crée les petites fiches ou les utilisateurs peuvent cliquer dessus pour accéder au contenu
     //Request (requete http) qui permet de recupere la requete d'un formulaire, EntityManager permet gérer les intéraction entre les entités
     //Pour finir on inporte les Repository pour permet d'utiliser les methodes de base des repository qui nous permete de faire des requetes SQL
@@ -60,7 +62,18 @@ class FichesController extends AbstractController
         $types = $typeRepository->findAll();
         $difficultes = $difficulteRepository->findAll();
 
+        $csrfToken = $csrfTokenManager->getToken('fiches_newPreview')->getValue();
+
         if ($request->isMethod('POST')) { // Si la méthode de la requête est POST (c'est-à-dire que le formulaire a été soumis)
+            
+            // Récupérer et vérifier le token CSRF
+            $token = $request->request->get('_csrf_token');
+
+            if (!$csrfTokenManager->isTokenValid(new CsrfToken('fiches_newPreview', $token))) {
+
+                throw new AccessDeniedHttpException('Le token CSRF est invalide.');
+            }
+
             $fiche = new Fiches(); // On crée une nouvelle instance de l'entité Fiches
 
             // On récupère les données soumises dans le formulaire et on les attribue à l'objet de l'entité $fiche
@@ -95,23 +108,41 @@ class FichesController extends AbstractController
             $em->flush();//Envoie réelement la fiche dans l'entité
 
             // Redirige l'administrateur vers la page de création du contenu de la fiche une fois fini
-            return $this->redirectToRoute('fiches_newContenu',['id' => $fiche->getId()]); 
+            return $this->redirectToRoute('fiches_newContenu',[
+                'id' => $fiche->getId(),
+            ]); 
         }
          
         // Si la méthode est GET (formulaire de création), on affiche le formulaire et on envoie les categorie ect pour les afficher sur la vue
-        return $this->render('fiches/newPreview.html.twig', ['categories' => $categories , 'types' => $types , 'difficultes' => $difficultes]);
+        return $this->render('fiches/newPreview.html.twig', [
+            'categories' => $categories , 
+            'types' => $types , 
+            'difficultes' => $difficultes,
+            'csrf_token' => $csrfToken // Passe le token CSRF à la vue
+    
+    ]);
     }
 
     #[Route('/admin/{id}/newContenu', name: 'fiches_newContenu', methods: ['GET', 'POST'])] // La route '/new' pour afficher le formulaire de création et traiter l'envoi du formulaire
 
-    public function newContenu(Fiches $fiche ,Request $request, EntityManagerInterface $em, MusclesRepository $musclesRepository): Response 
+    public function newContenu(CsrfTokenManagerInterface $csrfTokenManager,Fiches $fiche ,Request $request, EntityManagerInterface $em, MusclesRepository $musclesRepository): Response 
     // La méthode newContenu() gère l'affichage et la création du contenue des nouvelle fiches
     {
         
+
         $muscles = $musclesRepository->findall();//Utilise la methode du répository MusclesRepository pour récupper tout le contenu de la table 
-    
+        $csrfToken = $csrfTokenManager->getToken('fiches_newContenu')->getValue();
+
         if ($request->isMethod('POST')) { // Si la méthode de la requête est POST (c'est-à-dire que le formulaire a été soumis)
             
+             // Récupérer et vérifier le token CSRF
+            $token = $request->request->get('_csrf_token');
+            
+            if (!$csrfTokenManager->isTokenValid(new CsrfToken('fiches_newContenu', $token))) {
+
+                throw new AccessDeniedHttpException('Le token CSRF est invalide.');
+            }
+
             $ficheContenu = new FicheContenu(); // On crée une nouvelle instance de l'entité FicheContenu
            
             $ficheContenu->setFiche($fiche);//on definit l'attibut Fiche avec l'objet fiche qui contient notre FichePreview
@@ -146,11 +177,14 @@ class FichesController extends AbstractController
             return $this->redirectToRoute('fiches_index' ); // Redirige l'administrateur vers la page de la liste des fiches après l'ajout
         }
 
-        return $this->render('fiches/newContenu.html.twig',['muscles' => $muscles]); // Si la méthode est GET (formulaire de création), on affiche le formulaire
+        return $this->render('fiches/newContenu.html.twig',[
+            'muscles' => $muscles,
+            'csrf_token' => $csrfToken // Passe le token CSRF à la vue
+        ]); // Si la méthode est GET (formulaire de création), on affiche le formulaire
     }
     
-    #[Route('/admin/edit/{id}', name: 'fiches_edit', methods: ['GET', 'POST'])] // La route '/{id}/edit' permet de modifier une fiches existante
-    public function edit(Fiches $fiche, Request $request, EntityManagerInterface $em , CategoriesRepository $categoriesRepository , TypeRepository $typeRepository , DifficulteRepository $difficulteRepository ): Response 
+    #[Route('/admin/edition/{id}', name: 'fiches_edit', methods: ['GET', 'POST'])] // La route '/{id}/edit' permet de modifier une fiches existante
+    public function edit(CsrfTokenManagerInterface $csrfTokenManager,Fiches $fiche, Request $request, EntityManagerInterface $em , CategoriesRepository $categoriesRepository , TypeRepository $typeRepository , DifficulteRepository $difficulteRepository ): Response 
     // La méthode edit() permet de modifier les informations d'une fiches existante
     //Ici l'objet $fiche represente la fiche avec l'id qui est dans l'url(symfony lie fiche automatiquement a l'id du lien)
     {
@@ -159,7 +193,17 @@ class FichesController extends AbstractController
         $types = $typeRepository->findAll();
         $difficultes = $difficulteRepository->findAll();
 
+        $csrfToken = $csrfTokenManager->getToken('fiches_edit')->getValue();
+
         if ($request->isMethod('POST')) { // Si la méthode de la requête est POST (c'est-à-dire que le formulaire a été soumis)
+
+            // Récupérer et vérifier le token CSRF
+            $token = $request->request->get('_csrf_token');
+            
+            if (!$csrfTokenManager->isTokenValid(new CsrfToken('fiches_edit', $token))) {
+
+                throw new AccessDeniedHttpException('Le token CSRF est invalide.');
+            }
 
             // On récupère les données soumises dans le formulaire et on les attribue à l'entité $fiche
             $fiche->setNom($request->request->get('Nom')); // Attibut maintenant nom depuis la requête
@@ -190,7 +234,14 @@ class FichesController extends AbstractController
         }
 
         // Affiche le formulaire avec les données de l'utilisateur récuperer grace au repo et a l'objet fiche
-        return $this->render('fiches/edit.html.twig', ['fiche' => $fiche , 'categories' => $categories, 'types' => $types , 'difficultes' => $difficultes]); 
+        return $this->render('fiches/edit.html.twig', 
+        [
+            'fiche' => $fiche , 
+            'categories' => $categories, 
+            'types' => $types , 
+            'difficultes' => $difficultes,
+            'csrf_token' => $csrfToken // Passe le token CSRF à la vue
+        ]); 
     }
 
     #[Route('/{id}/admin/delete', name:  'fiches_delete', methods: ['POST'])] // La route '/{id}/delete' permet de supprimer un fiche
@@ -203,8 +254,11 @@ class FichesController extends AbstractController
             $em->remove($ficheMuscles[$muscle]); // Supprime les muscles de la base de données
         }
 
-        $em->remove($ficheContenu); // Supprime une fiche de la base de données
-        $em->flush(); // Sauvegarde la suppression dans la base de données
+        if($fiche == $ficheContenu.getFiche()){
+            $em->remove($fiche); // Supprime une fiche de la base de données
+            $em->remove($ficheContenu); // Supprime une fiche de la base de données
+            $em->flush(); // Sauvegarde la suppression dans la base de données
+        }
 
         return $this->redirectToRoute('fiches_index'); // Redirige vers la liste des utilisateurs après suppression
     }

@@ -6,6 +6,7 @@
     <form method="post" class="mt-4">
 
         <input type="hidden" name="Utilisateur" value="{{ app.user.id }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
 
         <div class="form-group mt-3">
             <label for="Photo">Photo</label>
@@ -14,12 +15,12 @@
 
         <div class="form-group mt-3">
             <label for="Nom">Nom</label>
-            <input type="text" name="Nom" class="form-control" required>
+            <input type="text" name="Nom" class="form-control" pattern=".{1,50}" title="Le titre doit contenir au maximum 50 caractères." required>
         </div>
 
         <div class="form-group mt-3">
             <label for="Description">Description</label>
-            <textarea type="text" name="Description" class="form-control" required></textarea>
+            <textarea type="text" name="Description" class="form-control" maxlength="205" title="La description doit contenir au maximum 205 caractères." required></textarea>
         </div>
 
         <div class="form-group mt-3">
