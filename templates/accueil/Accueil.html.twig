@@ -48,8 +48,12 @@
 
   <header class="baniere">
 
-    <form action="" class="Barre">
-      <input class="form-control" type="search" placeholder="Search" aria-label="Barre de recherche" />
+    <form action="{{ path('liste_fiches') }}" method='post' class="Barre">
+      <div class=" text-center d-flex">
+        <input type="text" class="form-control" name="recherche" id="recherche" placeholder="Rechercher une fiche"
+          value="{{ recherche ?? '' }}" />
+        <button type="submit" class="btn btn-secondary btn-sm ms-2">Rechercher</button>
+      </div>
     </form>
 
   </header>
@@ -64,7 +68,7 @@
 
         <div class="row">
         {% for fiche in fiches %}
-          <article class="col">
+          <article class="col mt-2">
             <a href="{{ path('fiche_show',{'id' : fiche.id}) }}">
               <div class="card" id="Fiche">
                 <img src="{{ fiche.Photo }}" class="Fiche-Image" height="238">

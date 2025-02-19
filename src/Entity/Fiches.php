@@ -22,8 +22,8 @@ class Fiches
     #[ORM\Column(type: 'text')]
     private ?string $Description = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn]
+    #[ORM\ManyToOne(targetEntity: Utilisateurs::class, inversedBy: 'fiches')]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?Utilisateurs $Utilisateur = null;
 
     #[ORM\ManyToOne]

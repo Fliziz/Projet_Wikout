@@ -17,7 +17,7 @@ p,h1,h2,h3,h4,h5,h6,a,label{
 
 .Barre{
     width: 100%;
-    height: 20px;
+    height: 30px;
 }
 
 .baniere{
@@ -184,7 +184,7 @@ footer{
 
 @media screen and (min-width : 375px) and (max-width : 480px) {/* Telephone */
     .baniere{
-        height: 160px;
+        height: 200px;
     }
 
     #card-container{

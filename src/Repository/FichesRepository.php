@@ -12,10 +12,11 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class FichesRepository extends ServiceEntityRepository
 {
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Fiches::class);
-    }   
+    }   // Ce constructeur configure le repository pour qu'il soit prêt à interagir avec l'entité Fiches via le gestionnaire d'entités fourni par $registry.
 
     public function findByTitleOrCategoryOrMusclesOrDifficulte(?string $Recherche, ?int $Categorie , ?int $Difficulte , ?int $Muscles): array
     {

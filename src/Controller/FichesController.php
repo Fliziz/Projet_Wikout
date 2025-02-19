@@ -29,24 +29,31 @@ class FichesController extends AbstractController
 {
 
     #[Route('/', name: 'fiches_index', methods: ['GET', 'POST'])]
-    public function index(FichesRepository $fichesRepository, CategoriesRepository $categoriesRepository, Request $request): Response
+    public function index(FichesRepository $fichesRepository, CategoriesRepository $categoriesRepository,DifficulteRepository $difficulteRepository,TypeRepository $typesRepository, Request $request): Response
     {   
         $categories = $categoriesRepository->findAll(); // Récupère toutes les catégories
+        $difficultes = $difficulteRepository->findAll(); // Récupère toutes les difficultes
+        $types = $typesRepository->findAll(); // Récupère toutes les type
+
 
         // Récupération des valeurs des filtres
-        $recherche = $request->request->get('recherche'); // Mot-clé pour la recherche
-        $categorie = $request->request->get('filtre');    // ID de la catégorie à filtrer
+        $Recherche = $request->request->get('recherche'); // Mot-clé pour la recherche
+        $selectCategorie = $request->request->get('filtrecategorie');    // ID de la catégorie à filtrer
+        $selectDifficulte = $request->request->get('filtredifficulte');    // ID de la Difficulte à filtrer
+        $selectType = $request->request->get('filtremuscles');    // ID de la Type à filtrer
 
         // Appel à la méthode du repository pour combiner recherche et filtre
-        $fiches = $fichesRepository->findByTitleAndCategory($recherche, $categorie);
-
-        $selectcategorie = $categorie;
+        $fiches = $fichesRepository->findByTitleOrCategoryOrMusclesOrDifficulte($Recherche ,$selectCategorie ,$selectDifficulte ,$selectType);
 
         return $this->render('fiches/IndexAdmin.html.twig', [
             'fiches' => $fiches,
             'categories' => $categories,
-            'selectcategorie' => $selectcategorie, // Pour garder la catégorie sélectionnée dans le formulaire
-            'recherche' => $recherche       // Pour garder le terme de recherche dans le formulaire
+            'difficultes' => $difficultes,
+            'types' => $types,
+            'selectCategorie' => $selectCategorie, // Pour garder la catégorie sélectionnée dans le formulaire
+            'selectDifficulte' => $selectDifficulte, // Pour garder la catégorie sélectionnée dans le formulaire
+            'selectType' => $selectType, // Pour garder la catégorie sélectionnée dans le formulaire
+            'Recherche' => $Recherche       // Pour garder le terme de recherche dans le formulaire
         ]);
     }
 
@@ -255,7 +262,6 @@ class FichesController extends AbstractController
         }
 
         if($fiche == $ficheContenu.getFiche()){
-            $em->remove($fiche); // Supprime une fiche de la base de données
             $em->remove($ficheContenu); // Supprime une fiche de la base de données
             $em->flush(); // Sauvegarde la suppression dans la base de données
         }

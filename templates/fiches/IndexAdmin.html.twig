@@ -34,30 +34,53 @@
   </nav>
 <div class="container mt-5">
     <h1 class="mb-4">Liste des fiches</h1>
-    <form action="{{path('fiches_index')}}" method='post'>
-        <div>
-            <label for="recherche" class="form-label">Recherche</label>
-            <input type="text" class="form-control" name="recherche" id="recherche" placeholder="Rechercher un fiche" value="{{ recherche ?? '' }}"/>
-            <button type="submit" class="btn btn-secondary btn-sm" >Rechercher</button>
-        </div>
-        
-        <div class="form-group mt-3">
-            <label for="filtre">Filtre Par Categorie</label>
-            <select name="filtre" id="filtre">
-                <option value=0>-- Toutes les catégories --</option><!--Voir avec manel pourquoi quand je met value="" ou value=null ca ne marche pas -->
-                {% for categorie in categories %}
-                
-                    <option value="{{ categorie.id }}" {% if selectcategorie == categorie.id %}selected{% endif %}> <!-- Si la categorie selectionner est egal a l'id de la categorie (quand on fait la liste de toute les categorie (le for )) on met cette categorie en selected (selectionner)-->
-                        {{ categorie.nom}}
-                    </option>
+    <form action="{{ path('liste_fiches') }}" method='post'>
+      <div class="Barre text-center d-flex">
+        <input type="text" class="form-control" name="recherche" id="recherche" placeholder="Rechercher une fiche"
+          value="{{ recherche ?? '' }}" />
+        <button type="submit" class="btn btn-secondary btn-sm">Rechercher</button>
+      </div>
 
-                {% endfor %}
-            </select>
-             <button type="submit" class="btn btn-secondary btn-sm" >Rechercher</button>
-             <a href="{{ path('fiches_index') }}" class="btn btn-secondary bg-danger my-3">X</a>
-        </div>
-    </form>
+  <div class="d-flex justify-content-between align-item-center bg-dark m-3">
+    <div class="form-group m-1">
+      <label for="filtrecategorie">Filtre Par Categorie</label>
+      <select name="filtrecategorie" id="filtrecategorie">
+        <option value=0>-- Toutes les catégories --</option>
+        {% for categorie in categories %}
+          <option value="{{ categorie.id }}" {% if selectCategorie == categorie.id %}selected{% endif %}>
+            {{ categorie.nom }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
 
+    <div class="form-group m-1">
+      <label for="filtreType">Types</label>
+      <select name="filtreType" id="filtretype">
+        <option value="">-- Tout les types --</option>
+        {% for type in types %}
+          <option value="{{ type.id }}" {% if selectType == type.id %}selected{% endif %}>
+            {{ type.nom }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group m-1">
+      <label for="filtreDifficulte">Difficulté</label>
+      <select name="filtreDifficulte" id="filtreDifficulte">
+        <option value="">-- Toutes les difficultés --</option>
+        {% for difficulte in difficultes %}
+          <option value="{{ difficulte.id }}" {% if selectDifficulte == difficulte.id %}selected{% endif %}>
+            {{ difficulte.nom }}
+          </option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-light btn-sm">Rechercher</button>
+      <a href="{{ path('liste_fiches') }}" class="btn btn-secondary bg-secondary btn-sm">X</a>
+    </div>
+  </div>
+</form>
 
     <table class="table table-striped">
         <thead>

@@ -2,15 +2,25 @@
 
 namespace App\Tests;
 
-use PHPUnit\Framework\TestCase;
-use App\Repository\FichesRepository;
 
-class FichesRepositoryTest extends TestCase
+use App\Repository\FichesRepository;
+use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
+
+
+class FichesRepositoryTest extends WebTestCase
 {
-    public function testRecherche(): void
+    public function testFonctionFindBytitle(): void
     {
-        $FichesRepo = new FichesRepository;
-        
-        $this->assertIsArray($FichesRepo->findByTitleOrCategoryOrMusclesOrDifficulte(";'Select * From fiches ","", "",""));
+        //Un mock est un objet qui simule le comportement d'un objet, en l'ocurence ici le repository
+        $fichesRepository = $this->createMock(FichesRepository::class); 
+        $fichesRepository->expects($this->once()) // once() signifie que la méthode doit être appelée une fois
+            ->method('findByTitleOrCategoryOrMusclesOrDifficulte')
+            ->with('test', 1, 1, 1)
+            ->willReturn([]);
+
+        $this->assertIsArray($fichesRepository->findByTitleOrCategoryOrMusclesOrDifficulte('test', 1, 1, 1));
+
     }
 }
