@@ -19,6 +19,7 @@ use App\Repository\UtilisateursRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -84,10 +85,13 @@ class FichesController extends AbstractController
             $fiche = new Fiches(); // On crée une nouvelle instance de l'entité Fiches
 
             // On récupère les données soumises dans le formulaire et on les attribue à l'objet de l'entité $fiche
+
+
             $fiche->setNom($request->request->get('Nom')); // Attribue le Nom depuis la requête
             $fiche->setPhoto($request->request->get('Photo')); 
-            $fiche->setDescription($request->request->get('Description'));  
             
+            $fiche->setDescription($request->request->get('Description'));  
+
             $fiche->setUtilisateur($utilisateursRepository->find($request->request->get('Utilisateur')));//On recupere l'utilisateur grace a une requete sql en fontion de l'id utilisateur present dans la requete
 
             // Récupérer l'ID de la catégorie depuis le formulaire
@@ -110,6 +114,14 @@ class FichesController extends AbstractController
            
         
             $fiche->setDifficulte($difficultes); 
+
+            $errors = $validator->validate($user);
+            
+            if (count($errors) > 0) {
+                return $this->render('error.html.twig', [
+                    'errors' => $errors,
+                ]);
+            }
         
             $em->persist($fiche); // Prépare l'entité $fiche à être sauvegardée dans la base de données
             $em->flush();//Envoie réelement la fiche dans l'entité
@@ -232,7 +244,15 @@ class FichesController extends AbstractController
             $difficultes = $difficulteRepository->find($request->request->get('Difficulte_id'));
            
             $fiche->setDifficulte($difficultes); 
-        
+            
+            $errors = $validator->validate($user);
+
+            if (count($errors) > 0) {
+                return $this->render('error.html.twig', [
+                    'errors' => $errors,
+                ]);
+            }
+
             $em->persist($fiche); // Prépare l'entité $fiche à être sauvegardée dans la base de données
             $em->flush(); // Sauvegarde réellement les données dans la base de données
             
@@ -257,12 +277,15 @@ class FichesController extends AbstractController
         $ficheContenu = $ficheContenuRepository->findOneBy(['Fiche' => $fiche ]);
         $ficheMuscles = $FMRepository->findBy(['Fiche_Contenu' => $fiche ]);
 
+        
+
         for ($muscle = 0 ;$muscle < count($ficheMuscles) ; $muscle++){
             $em->remove($ficheMuscles[$muscle]); // Supprime les muscles de la base de données
         }
 
-        if($fiche == $ficheContenu.getFiche()){
+        if($fiche == $ficheContenu->getFiche()){
             $em->remove($ficheContenu); // Supprime une fiche de la base de données
+            $em->remove($fiche); // Supprime une fiche de la base de données	
             $em->flush(); // Sauvegarde la suppression dans la base de données
         }
 

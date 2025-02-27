@@ -11,7 +11,7 @@ final class ContactTest extends TestCase
 
         $email = $contact->setEmail('test@gmail.com');
 
-        $this->assertStringContainsString('@', $contact->getEmail());
+        $this->assertStringContainsString('test@gmail.com', $contact->getEmail());
 
     }
 

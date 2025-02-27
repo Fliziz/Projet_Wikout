@@ -77,10 +77,17 @@ final class CommentairesController extends AbstractController
     #[Route('fiches/{id}/commentaire/edit/{com}', name: 'commentaire_edit', methods: ['GET', 'POST'])]
     public function edit(CsrfTokenManagerInterface $csrfTokenManager,$com,Request $request,CommentairesRepository $commentairesRepository, EntityManagerInterface $em,Fiches $Fiche): Response
     {
-       
+        
+        
         // $commentairess = $commentairesRepository -> findAll();
         $commentaire = $commentairesRepository->find($com);
         
+        if ($this->getUser() !== $commentaire->getUtilisateur()) {
+            return $this->redirectToRoute('fiche_show', [
+                'id' => $Fiche->getId()
+            ]);
+        }
+    
         $csrfToken = $csrfTokenManager->getToken('fiches_edit')->getValue();
         
         if($request->isMethod('POST')){

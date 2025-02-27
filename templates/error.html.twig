@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error Page{% endblock %}
+
+{% block body %}
+    {% if errors is defined and errors|length > 0 %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error.message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+<a href="{{ path('accueil') }}">Retourner a la page d'accueil</a>
+    {% else %}
+{% endif %}
+{% endblock %}

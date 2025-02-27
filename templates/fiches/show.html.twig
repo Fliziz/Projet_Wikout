@@ -81,7 +81,7 @@
                                   <a class="btn btn-primary btn-sm" href="{{ path('commentaire_edit', {'id' : FicheContenu.Fiche.id , 'com': commentaire.id}) }}">editer</a>
                               {% endif %}
 
-                              {% if app.user and app.user.id == commentaire.Utilisateur.id  %}
+                              {% if app.user and app.user.id == commentaire.Utilisateur.id or is_granted('ROLE_ADMIN')  %}
                                 <form action="{{ path('commentaire_delete', {'Fiche' : FicheContenu.Fiche.id ,'id': commentaire.id}) }}" method="post" style="display: inline;">
 
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ commentaire.id) }}">

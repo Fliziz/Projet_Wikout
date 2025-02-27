@@ -2,10 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Type;
 use App\Entity\Fiches;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Categories;
+use App\Entity\Difficulte;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Fiches>
@@ -18,30 +21,41 @@ class FichesRepository extends ServiceEntityRepository
         parent::__construct($registry, Fiches::class);
     }   // Ce constructeur configure le repository pour qu'il soit prêt à interagir avec l'entité Fiches via le gestionnaire d'entités fourni par $registry.
 
-    public function findByTitleOrCategoryOrMusclesOrDifficulte(?string $Recherche, ?int $Categorie , ?int $Difficulte , ?int $Muscles): array
+    public function findByTitleOrCategoryOrMusclesOrDifficulte(?string $Recherche, ?int $Categorie_Id, ?int $Difficulte_Id, ?int $Type_Id): array
     {
-        $data = $this->createQueryBuilder('fiches'); //l'entité Articles    
+        $typeRepository = $this->getEntityManager()->getRepository(Type::class);
+        $categorieRepository = $this->getEntityManager()->getRepository(Categories::class);
+        $difficulteRepository = $this->getEntityManager()->getRepository(Difficulte::class);
 
-        // Si un mot-clé est présent, ajoute une condition LIKE pour le titre
+        $data = $this->createQueryBuilder('fiches');
+
         if ($Recherche) {
             $data->andWhere('fiches.Nom LIKE :Recherche')
                ->setParameter('Recherche', '%' . $Recherche . '%');
         }
 
-        if ($Muscles) {
-            $data->andWhere('fiches.Muscles LIKE :Mucles')
-               ->setParameter('Mucles', '%' . $Mucles . '%');
+        if ($Type_Id ) {
+            $Type = $typeRepository->find($Type_Id);
+            if ($Type) {
+                $data->andWhere('fiches.Type = :Type')
+                   ->setParameter('Type', $Type);
+            }
         }
 
-        if ($Difficulte) {
-            $data->andWhere('fiches.Difficulte LIKE :Difficulte')
-               ->setParameter('Difficulte', '%' . $Difficulte . '%');
+        if ($Difficulte_Id) {
+            $Difficulte = $difficulteRepository->find($Difficulte_Id);
+            if ($Difficulte) {
+                $data->andWhere('fiches.Difficulte = :Difficulte')
+                   ->setParameter('Difficulte', $Difficulte);
+            }
         }
 
-        // Si un filtre de catégorie est présent, ajoute une condition pour l'ID de catégorie
-        if ($Categorie) {
-            $data->andWhere('fiches.Categorie = :Categorie')
-               ->setParameter('Categorie', $Categorie);
+        if ($Categorie_Id) {
+            $Categorie = $categorieRepository->find($Categorie_Id);
+            if ($Categorie) {
+                $data->andWhere('fiches.Categorie = :Categorie')
+                   ->setParameter('Categorie', $Categorie);
+            }
         }
 
         return $data->getQuery()->getResult();
@@ -50,7 +64,7 @@ class FichesRepository extends ServiceEntityRepository
     public function paginationFiches(int $page , int $limit): Paginator
     {
         return new Paginator($this
-            ->createQueryBuilder('r')
+            ->createQueryBuilder('pagination')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
             ->getQuery()
@@ -58,4 +72,14 @@ class FichesRepository extends ServiceEntityRepository
              false # Permet d'enlever le distinct dans la requette sql pour gagner en performance 
         );
     }
+
+    public function findByIdDesc(): array
+       {
+           return $this->createQueryBuilder('fiches')
+               ->orderBy('fiches.id', 'DESC')
+               ->setMaxResults(6)
+               ->getQuery()
+               ->getResult()
+           ;
+       }
 }

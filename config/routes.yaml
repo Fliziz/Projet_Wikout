@@ -21,3 +21,4 @@ api_contactIndex:
     path: /api/contact/index
     controller: App\Controller\ContactController::index_api
     methods: GET
+

@@ -18,15 +18,34 @@
             <a class="nav-link active" aria-current="page" href="{{ path('accueil') }}">Accueil</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="{{ path('fiches_index')}}">Index_Fiches</a>
+            <a class="nav-link active" href="{{ path('utilisateurs_index') }}">Index Utilisateurs</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="{{ path('utilisateurs_index')}}">Index_Utilisateurs</a>
+            <a class="nav-link active" href="{{ path('fiches_index') }}">Index Fiches</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="{{ path('commentaires_index')}}">Index_commentaires</a>
+            <a class="nav-link active" href="{{ path('commentaires_index') }}">Index Commentaires</a>
           </li>
         </ul>
+        <div>
+          <ul class="d-flex flex-row nav col-12  align-items-center justify-content-center">
+              {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('utilisateurs_index') }}" class="nav-link px-2 text-white">Espace Admin</a>
+              {% endif %}
+              {% if app.user  %}
+                <img src="{{ asset(app.user.PhotoProfil) }}" alt="Logo" class="Logo" />
+                <a href="{{ path('utilisateurs_profile') }}" class="nav-link px-2 text-white">{{ app.user.pseudo }}</a>
+                <a href="{{ path('app_logout') }}" class="nav-link border-1 border-white">
+                  <img src="{{ asset("styles/Image/logout.png") }}" alt="logo de déconnetion" width = "20px" class="ms-2"/>
+                </a>
+                
+              {% else %}
+                <img src="{{ asset('styles/Image/Avatar_Guest.png') }}" alt="Logo" class="Logo" />
+                <a href="{{ path('app_login') }}" class="nav-link px-2 text-white">Inscription\Connexion</a>
+              {% endif %}
+
+          </ul>
+        </div>
       </div>
     </div>
   </nav>

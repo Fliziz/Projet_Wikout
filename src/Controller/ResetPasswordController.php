@@ -113,9 +113,19 @@ class ResetPasswordController extends AbstractController
 
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
-
+            
             // Encode(hash) the plain password, and set it.
             $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
+
+            // Validation des contraintes de l'entité
+            $errors = $validator->validate($user);
+            
+            if (count($errors) > 0) {
+                return $this->render('reset_password/reset.html.twig', [
+                'resetForm' => $form,
+                ]);
+            }
+
             $this->entityManager->flush();
 
             // The session is cleaned up after the password has been changed.

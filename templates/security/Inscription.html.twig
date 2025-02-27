@@ -3,11 +3,11 @@
 {% block body %}
 <section class="d-flex">
 
-    <figure style="width: 50%;">
-        <img src="{{ asset('styles/Image/ImageConnexion.jpg') }}" alt="Image de connexion avec des haltere sur un fond gris" width="100%" height="750px">
+    <figure style="width: 50%; max-height: 900px; margin: 0px;">
+        <img src="{{ asset('styles/Image/ImageConnexion.jpg') }}" alt="Image de connexion avec des haltere sur un fond gris" width="100%" height="auto" style="max-height: 900px;">
     </figure>
 
-    <aside style=" width: 50%;">
+    <aside style=" width: 50%; max-height: 900px;">
         <div class="Login-Sign">
         <a href="{{ path('accueil') }}" class="text-center"><img src="{{ asset('styles/Image/Logo Site.webp') }}" alt="Logo" width="100px"
             height="100px" />
@@ -17,7 +17,7 @@
             <h1 class="text-decoration-underline">Sign up to Wikout</h1>
             </div>
 
-            <form method="post" class="mt-4">
+            <form method="post" action="{{ path('inscription') }}" class="mt-4">
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
 
@@ -32,7 +32,7 @@
             </div>
             <div class="form-group connexion">
                 <label for="Password">Mot de passe</label>
-                <input type="password" class="form-control" id="Password" name="Mot_de_Passe" pattern="(?=.*[a-z])(?=.*[A-Z]).{14,}" title="Le mot de passe doit contenir au moins 14 caractères, incluant des majuscules et des minuscules." required>
+                <input type="password" class="form-control" id="Password" name="Mot_de_Passe"  required>
                 <!-- (?=.*[a-z]) : Cette partie de l'expression vérifie qu'il y a au moins une lettre minuscule dans la chaîne.
                      (?= ... ) signifie "doit être suivi par"
                      .* signifie "n'importe quel caractère (sauf les nouvelles lignes), zéro ou plusieurs fois"
@@ -42,15 +42,26 @@
 
             <div class="form-group connexion">
                 <label for="PasswordConfirm">Entrez le mot de passe à nouveau </label>
-                <input type="password" class="form-control" id="PasswordConfirm" pattern="(?=.*[a-z])(?=.*[A-Z]).{14,}" title="Le mot de passe doit contenir au moins 14 caractères, incluant des majuscules et des minuscules." required>
+                <input type="password" class="form-control" id="PasswordConfirm" required>
             </div>
              <div class="form-group connexion">
                 <input class="form-check-input" type="checkbox" name="condition" id="condition" required>
-                <label class="form-check-label" for="condition">J'accepte <a href="#">les conditions d'utilisation</a> de Wikout</label>
+                <label class="form-check-label" for="condition">J'accepte <a href="{{ path('condition_utilisation') }}" class="text-primary">les conditions d'utilisation</a> de Wikout</label>
             </div>
+            
+            {% if errors is defined and errors|length > 0 %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for error in errors %}
+                            <li>{{ error.message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
             <div class="Sign-in text-center">
                 <div>
-                    <button type="button" class="btn btn-primary w-50">
+                    <button type="submit" class="btn btn-primary w-50">
                     Inscription
                     </button>
                     <a href="{{ path('app_login') }}" class="btn btn-secondary ">Retour</a>
@@ -67,7 +78,7 @@
             <a href="">Confidentialité et cookies</a>
         </div>
         <div class="FootLink">
-            <a href="">Conditions d’utilisation</a>
+            <a href="{{ path('condition_utilisation') }}">Conditions d’utilisation</a>
         </div>
         </div>
     </aside>

@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\DifficultRepository;
+use App\Repository\DifficulteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: DifficultRepository::class)]
+#[ORM\Entity(repositoryClass: DifficulteRepository::class)]
 class Difficulte
 {
     #[ORM\Id]

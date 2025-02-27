@@ -43,7 +43,7 @@ class UtilisateursController extends AbstractController // Déclaration de la cl
 
             $Utilisateur = new Utilisateurs(); // On crée une nouvelle instance de l'entité utilisateurs
 
-            $Utilisateur->setPhotoProfil("{{ asset('styles/Image/Avatar_Guest.jpg') }}"); // On définit par défault la photo de profil de l'utilisateur
+            $Utilisateur->setPhotoProfil("{{ asset('styles/Image/Avatar_Guest.png') }}"); // On définit par défault la photo de profil de l'utilisateur
             // On récupère les données soumises dans le formulaire et on les attribue à l'entité $utilisateurs
             $Utilisateur->setPseudo($request->request->get('Pseudo')); // Attribue le nom de l'utilisateur depuis la requête
             $Utilisateur->setEmail($request->request->get('Email')); // Attribue l'email depuis la requête

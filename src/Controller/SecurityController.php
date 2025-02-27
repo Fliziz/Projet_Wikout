@@ -13,6 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController; // On importe 
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils; // On importe AuthenticationUtils pour gérer l'authentification et récupérer des informations sur l'utilisateur connecté (erreurs de connexion, dernier nom d'utilisateur)
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SecurityController extends AbstractController // Déclaration de la classe SecurityController qui étend AbstractController, ce qui permet d'hériter de nombreuses méthodes utiles pour le contrôleur
 {
@@ -32,45 +34,57 @@ class SecurityController extends AbstractController // Déclaration de la classe
     #[Route('/logout', name: 'app_logout')] // Annotation définissant la route '/logout' pour gérer la déconnexion des utilisateurs
     public function logout(): void {} // Méthode vide pour gérer la déconnexion. Symfony gère automatiquement la déconnexion, donc cette méthode ne nécessite pas de code
 
-    #[Route('/inscription', name: 'inscription', methods: ['GET', 'POST'])] 
-    public function inscription(CsrfTokenManagerInterface $csrfTokenManager,Request $request, EntityManagerInterface $em): Response 
+    #[Route('/inscription', name: 'inscription', methods: ['GET', 'POST'])]
+    public function inscription( CsrfTokenManagerInterface $csrfTokenManager,Request $request,EntityManagerInterface $em,ValidatorInterface $validator,UserPasswordHasherInterface $passwordHasher ): Response 
     {
-
         $csrfToken = $csrfTokenManager->getToken('inscription')->getValue();
 
-        if ($request->isMethod('POST')) { // Si la méthode de la requête est POST (c'est-à-dire que le formulaire a été soumis)
+        if ($request->isMethod('POST')) { // Vérifie si le formulaire a été soumis
 
-            // Récupérer et vérifier le token CSRF
+            // Vérification du token CSRF
             $token = $request->request->get('_csrf_token');
-            
             if (!$csrfTokenManager->isTokenValid(new CsrfToken('inscription', $token))) {
-
                 throw new AccessDeniedHttpException('Le token CSRF est invalide.');
             }
 
-            $Utilisateur = new Utilisateurs(); // On crée une nouvelle instance de l'entité utilisateurs
+            // Création de l'utilisateur
+            $Utilisateur = new Utilisateurs();
 
-            $Utilisateur->setPhotoProfil("{{ asset('styles/Image/Avatar_Guest.jpg') }}"); // On définit par défault la photo de profil de l'utilisateur
-            // On récupère les données soumises dans le formulaire et on les attribue à l'entité $utilisateurs
-            $Utilisateur->setPseudo($request->request->get('Pseudo')); // Attribue le nom de l'utilisateur depuis la requête
-            $Utilisateur->setEmail($request->request->get('Email')); // Attribue l'email depuis la requête
+            // Valeurs par défaut et récupération des données
+            $Utilisateur->setPhotoProfil("styles/Image/Avatar_Guest.png");
+            $Utilisateur->setPseudo($request->request->get('Pseudo'));
+            $Utilisateur->setEmail($request->request->get('Email'));
+            $role = $request->request->get('role', 'ROLE_Utilisateur');
+            $Utilisateur->setRoles([$role]);
 
-            // Hachage du mot de passe avant de le sauvegarder dans la base de données
-            $hashedPassword = password_hash($request->request->get('Mot_de_Passe'), PASSWORD_BCRYPT); // Utilise bcrypt pour sécuriser le mot de passe
-            $Utilisateur->setPassword($hashedPassword); // On attribue le mot de passe haché à l'utilisateur
+            // Récupération du mot de passe brut
+            $plainPassword = $request->request->get('Mot_de_Passe');
+            $Utilisateur->setPassword($plainPassword); // On met d'abord le mot de passe brut pour la validation
 
-            $role = $request->request->get('role', 'ROLE_Utilisateur'); // On récupère le rôle du formulaire. Par défaut, il sera 'ROLE_utilisateurs'
-            $Utilisateur->setRoles([$role]); // Attribue le rôle à l'utilisateur
+            // Validation des contraintes de l'entité
+            $errors = $validator->validate($Utilisateur);
+            
+            if (count($errors) > 0) {
+                return $this->render('security/Inscription.html.twig', [
+                    'errors' => $errors,
+                    'csrf_token' => $csrfToken,
+                ]);
+            }
 
-            $em->persist($Utilisateur); // Prépare l'entité $utilisateurs à être sauvegardée dans la base de données
-            $em->flush(); // Sauvegarde réellement les données dans la base de données
+            // Hashage du mot de passe après validation
+            $hashedPassword = $passwordHasher->hashPassword($Utilisateur, $plainPassword);
+            $Utilisateur->setPassword($hashedPassword); // Remplace le mot de passe par sa version hashée
 
-            return $this->redirectToRoute('app_login'); // Redirige l'utilisateur vers la page de la liste des utilisateurs après l'ajout
+            // Sauvegarde dans la base de données
+            $em->persist($Utilisateur);
+            $em->flush();
+
+            return $this->redirectToRoute('app_login'); // Redirection après l'inscription
         }
 
         return $this->render('security/Inscription.html.twig', [
-            'csrf_token' => $csrfToken, // Passe le token CSRF à la vue pour l'utiliser dans le formulaire
-        ]); // Si la méthode est GET (formulaire de création), on affiche le formulaire
+            'csrf_token' => $csrfToken, 
+        ]);
     }
 }
 

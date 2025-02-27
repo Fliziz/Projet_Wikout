@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UtilisateursRepository::class)]
 class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface // La classe User implémente UserInterface et PasswordAuthenticatedUserInterface, ce qui signifie que cette classe doit gérer les informations d'authentification de l'utilisateur
@@ -20,12 +21,25 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface 
     private ?string $Photo_Profil = null;
 
     #[ORM\Column(length: 20)]
+    #[Assert\NotBlank(message: "Le pseudo est obligatoire.")]
+    #[Assert\Length(min: 3, max: 20, minMessage: "Le pseudo doit contenir au moins 3 caractères.", maxMessage: "Le pseudo ne doit pas dépasser 20 caractères.")]
     private ?string $Pseudo = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: "L'email est obligatoire.")]
+    #[Assert\Email(message: "L'email '{{ value }}' n'est pas valide.")]
     private ?string $Email = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le mot de passe est obligatoire.")]
+    #[Assert\Length(
+        min: 12, 
+        minMessage: "Le mot de passe doit contenir au moins 12 caractères."
+    )]
+    #[Assert\Regex(
+        pattern: "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{12,}$/",
+        message: "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial."
+    )]
     private ?string $Mot_de_Passe = null;
 
     #[ORM\Column(length: 50, nullable: true)]
