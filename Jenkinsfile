@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        GIT_REPO = "https://github.com/hmicn/certif-bookapp.git"
+        GIT_REPO = "https://github.com/Fliziz/Projet_Wikout.git"
         GIT_BRANCH = "main"
         DEPLOY_DIR = "web011"
     }
