@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<section class="d-flex">
+
+    <figure style="width: 50%; max-height: 900px; margin: 0px;">
+        <img src="{{ asset('styles/Image/ImageConnexion.jpg') }}" alt="Image de connexion avec des haltere sur un fond gris" width="100%" height="auto" style="max-height: 900px;">
+    </figure>
+
+    <aside style=" width: 50%; max-height: 900px;">
+        <div class="Login-Sign">
+        <a href="{{ path('accueil') }}" class="text-center"><img src="{{ asset('styles/Image/Logo Site.webp') }}" alt="Logo" width="100px"
+            height="100px" />
+        </a>
+        <div class="connexion">
+            <div class="text-center ">
+            <h1 class="text-decoration-underline">Sign up to Wikout</h1>
+            </div>
+
+            <form method="post" action="{{ path('inscription') }}" class="mt-4">
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+
+            <div class="form-group connexion">
+                <label for="Pseudo">Pseudonyme (4-20 caractères)</label>
+                <input type="text" id="Pseudo" name="Pseudo" class="form-control" placeholder="Musclor924" pattern=".{4,20}" title="Le pseudo doit etre entre 4 et 20 caractère" required>
+            </div>
+            <div class="form-group connexion">
+                <label for="Email">Addresse Email</label>
+                <input type="email" class="form-control"  name="Email" id="Email" aria-describedby="emailHelp"
+                placeholder="user@gmail.com" maxlength="{50}" title="L'adresse mail doit contenir au maximum 50 caractère" required>
+            </div>
+            <div class="form-group connexion">
+                <label for="Password">Mot de passe</label>
+                <input type="password" class="form-control" id="Password" name="Mot_de_Passe"  required>
+                <!-- (?=.*[a-z]) : Cette partie de l'expression vérifie qu'il y a au moins une lettre minuscule dans la chaîne.
+                     (?= ... ) signifie "doit être suivi par"
+                     .* signifie "n'importe quel caractère (sauf les nouvelles lignes), zéro ou plusieurs fois"
+                     [a-z] signifie "une lettre minuscule"
+                -->
+            </div>
+
+            <div class="form-group connexion">
+                <label for="PasswordConfirm">Entrez le mot de passe à nouveau </label>
+                <input type="password" class="form-control" id="PasswordConfirm" required>
+            </div>
+             <div class="form-group connexion">
+                <input class="form-check-input" type="checkbox" name="condition" id="condition" required>
+                <label class="form-check-label" for="condition">J'accepte <a href="{{ path('condition_utilisation') }}" class="text-primary">les conditions d'utilisation</a> de Wikout</label>
+            </div>
+            
+            {% if errors is defined and errors|length > 0 %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for error in errors %}
+                            <li>{{ error.message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="Sign-in text-center">
+                <div>
+                    <button type="submit" class="btn btn-primary w-50">
+                    Inscription
+                    </button>
+                    <a href="{{ path('app_login') }}" class="btn btn-secondary ">Retour</a>
+                </div>
+            </div>
+            </form>
+        </div>
+        </div>
+        <div class="FooterNavIns">
+        <div class="FootLink">
+            © 2024 Wikout
+        </div>
+        <div class="FootLink">
+            <a href="">Confidentialité et cookies</a>
+        </div>
+        <div class="FootLink">
+            <a href="{{ path('condition_utilisation') }}">Conditions d’utilisation</a>
+        </div>
+        </div>
+    </aside>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+{% endblock %}

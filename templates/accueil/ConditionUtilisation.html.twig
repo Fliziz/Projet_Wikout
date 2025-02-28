@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conditions d'Utilisation - Wikout{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-expand-lg data-bs-theme" style=" background-color: #27252A;" data-bs-theme="dark">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="{{ path('accueil') }}"><img src="{{ asset('styles/Image/Logo Site.webp') }}" alt="Logo" class="Logo" /></a>
+
+      <button class="navbar-toggler btn-light" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ path('accueil') }}">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{{ path('liste_fiches') }}">Liste des exercices</a>
+          </li>
+        </ul>
+        <div>
+          <ul class="d-flex flex-row nav col-12  align-items-center justify-content-center">
+              {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('utilisateurs_index') }}" class="nav-link px-2 text-white">Espace Admin</a>
+              {% endif %}
+              {% if app.user  %}
+                <img src="{{ asset(app.user.PhotoProfil) }}" alt="Logo" class="Logo" />
+                <a href="{{ path('utilisateurs_profile') }}" class="nav-link px-2 text-white">{{ app.user.pseudo }}</a>
+                <a href="{{ path('app_logout') }}" class="nav-link border-1 border-white">
+                  <img src="{{ asset("styles/Image/logout.png") }}" alt="logo de déconnetion" width = "20px" class="ms-2"/>
+                </a>
+                
+              {% else %}
+                <img src="{{ asset('styles/Image/Avatar_Guest.png') }}" alt="Logo" class="Logo" />
+                <a href="{{ path('app_login') }}" class="nav-link px-2 text-white">Inscription\Connexion</a>
+              {% endif %}
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+<div class="container my-5 text-center">
+    <h1 class="mb-4">Conditions d'Utilisation</h1>
+
+    <section class="mb-4">
+        <h2>1. Acceptation des conditions</h2>
+        <p>En accédant et en utilisant ce site, vous acceptez d'être lié par ces conditions d'utilisation.</p>
+    </section>
+
+    <section class="mb-4">
+        <h2>2. Utilisation du service</h2>
+        <p>Le service est fourni "tel quel" et nous ne garantissons pas sa disponibilité continue.</p>
+    </section>
+
+    <section class="mb-4">
+        <h2>3. Compte utilisateur</h2>
+        <p>Vous êtes responsable de maintenir la confidentialité de votre compte et mot de passe.</p>
+    </section>
+
+    <section class="mb-4">
+        <h2>4. Contenu</h2>
+        <p>Les utilisateurs sont responsables du contenu qu'ils publient sur la plateforme.</p>
+    </section>
+
+    <section class="mb-4">
+        <h2>5. Propriété intellectuelle</h2>
+        <p>Tout le contenu présent sur ce site est protégé par les droits d'auteur.</p>
+    </section>
+
+    <section class="mb-4">
+        <h2>6. Modification des conditions</h2>
+        <p>Nous nous réservons le droit de modifier ces conditions à tout moment.</p>
+    </section>
+</div>
+<footer>
+    <div class="FooterForm">
+      <div class="TitreForm">
+        <h1>Contactez-Nous</h1>
+      </div>
+
+      <div class="Contact">
+
+        <form action="">
+
+          <div class="row justify-content-center mb-3">
+            <div class=" col-2">
+              <label for="Name" class="form-label">Nom :</label>
+            </div>
+            <div class="col-4">
+              <input type="text" class="form-control" id="Name" placeholder="Nom">
+            </div>
+            <div class="col-2">
+              <label for="Surname" class="form-label">Prenom :</label>
+            </div>
+            <div class="col-4">
+              <input type="text" class="form-control" id="Surname" placeholder="Prenom">
+            </div>
+          </div>
+
+          <div class="row justify-content-center mb-3">
+            <div class=" col-2">
+              <label for="Email" class="form-label">Email :</label>
+            </div>
+            <div class="col-10">
+              <input type="email" class="form-control" id="Email" placeholder="name@example.com">
+            </div>
+          </div>
+
+          <div class="text-center m-0">
+            <label for="Commentaire" class="form-label">Commentaire :</label>
+            <textarea class="form-control" id="Commentaire" rows="3"></textarea>
+          </div>
+        </form>
+        <button type="submit" class="btn btn-outline-light m-3 w-25">Envoyer</button>
+      </div>
+    </div>
+    <div class="FooterNav">ù
+      <div class="FootLink">
+        © 2024 Wikout
+      </div>
+      <div class="FootLink">
+        <a href="">Confidentialité et cookies</a>
+      </div>
+      <div class="FootLink">
+        <a href="">Conditions d’utilisation</a>
+      </div>
+    </div>
+  </footer>
+{% endblock %}

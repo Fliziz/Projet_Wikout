@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Editer une fiche d'exercice</h1>
+    <form method="post" class="mt-4">
+
+        <input type="hidden" name="Editeur" value="{{ app.user.pseudo }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+
+        <div class="form-group mt-3">
+            <label for="Photo">Photo</label>
+            <input type="text" name="Photo" class="form-control" value="{{ fiche.Photo }}" required>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Nom">Nom</label>
+            <input type="text" name="Nom" class="form-control" value="{{ fiche.Nom }}" pattern="{50}" required>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Description">Description</label>
+            <textarea type="text" name="Description" class="form-control" pattern="{205}" required>{{ fiche.Description }}</textarea>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Categorie_id">categorie</label>
+            <select name="Categorie_id">
+                <option value="">-- Toutes les catégories --</option>
+                {% for categorie in categories %}
+                    <option value="{{ categorie.id }}" {% if categorie.id == fiche.categorie.id %}selected{% endif %}>{{ categorie.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Type_id">Types</label>
+            <select name="Type_id">
+                <option value="">-- Tout les types --</option>
+                {% for type in types %}
+                    <option value="{{ type.id }}" {% if type.id == fiche.type.id %}selected{% endif %}>{{ type.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Difficulte_id">Difficulté</label>
+            <select name="Difficulte_id">
+                <option value="">-- Toutes les difficultés --</option>
+                {% for difficulte in difficultes %}
+                    <option value="{{ difficulte.id }}" {% if difficulte.id == fiche.difficulte.id %}selected{% endif %}>{{ difficulte.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">Enregistrer</button>
+        <a href="{{ path('fiches_index') }}" class="btn btn-secondary mt-3">Retour</a>
+    </form>
+</div>
+{% endblock %}

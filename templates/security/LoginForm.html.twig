@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <section class="d-flex">
+        <figure style="width: 50%;">
+            <img src="{{ asset('styles/Image/ImageConnexion.jpg') }}" alt="Image de connexion avec des haltere sur un fond gris" width="100%" height="750px">
+        </figure>
+
+        <aside style=" width: 50%;">
+            <div class="Login-Sign">
+                <div class="inscription">
+                    <a href="{{ path('accueil') }}" class="text-center"><img src="{{ asset('styles/Image/Logo Site.webp') }}" alt="Logo" width="100px"
+                            height="100px" /></a>
+
+                    <h1 class="text-decoration-underline">Sign Up</h1>
+
+                    <a href="{{ path('inscription') }}" class="btn btn-outline-danger button-ins mt-3 mb-3">
+                        <img src="{{ asset('styles/Image/Avatar_Guest.png') }}" alt="" width="cover" height="40px">
+                        Inscription
+                    </a>
+                    <p>―――――――――――――――― OR ――――――――――――――――</p>
+                </div>
+                <div class="connexion">
+                    <div class="text-center">
+                        <h1 class="text-decoration-underline">Sign in to Wikout</h1>
+                    </div>
+
+                    <form method="post"  action="{{ path('app_login') }}" class="mt-3">
+
+                        <div class="form-group connexion">
+                            <label for="Email">Addresse Email ou pseudonyme</label>
+                            <input type="email" id="Email" name="_username" class="form-control"  class="form-control"  placeholder="user@gmail.com ou pseudo" required>
+                        </div>
+                        <div class="form-group connexion">
+                            <label for="Password">Mot de passe</label>
+                            <input  type="password" id="Password" name="_password" class="form-control" required>
+                        </div>
+                        <div class="Sign-in text-center">
+                            <div>
+                                <button type="submit" class="btn btn-danger w-50">Connexion</button>
+                            </div>
+
+
+                            <div class="forgot">
+                                <a href="{{path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="FooterNav mt-2">
+                <div class="FootLink">
+                    © 2024 Wikout
+                </div>
+                <div class="FootLink">
+                    <a href="">Confidentialité et cookies</a>
+                </div>
+                <div class="FootLink">
+                    <a href="{{ path('condition_utilisation') }}">Conditions d’utilisation</a>
+                </div>
+            </div>
+        </aside>
+         {% if error %}
+            <div class="alert alert-danger mt-3">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

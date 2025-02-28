@@ -1,0 +1,13 @@
+{# templates/bundles/TwigBundle/Exception/error403.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<!-- http://127.0.0.1:8000/_error/404.twig  pour acceder a cette erreur-->
+    <section class="d-flex justify-content-center align-items-center flex-column">
+        <h1>Accès Refuser</h1>
+
+        <p>
+            Petit malin, vous avez essayé d'accéder à une page interdite. Veuillez <a class="text-primary text-decoration-underline" href="{{ path('accueil') }}">retourner à la page d'accueil</a>.
+        </p>
+    </section>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fiches{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-expand-lg data-bs-theme" style=" background-color: #27252A;" data-bs-theme="dark">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="{{ path('accueil') }}"><img src="{{ asset('styles/Image/Logo Site.webp') }}" alt="Logo" class="Logo" /></a>
+
+      <button class="navbar-toggler btn-light" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ path('accueil') }}">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="">Liste des exercices</a>
+          </li>
+        </ul>
+        <div>
+          <ul class="d-flex flex-row nav col-12  align-items-center justify-content-center">
+              {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('utilisateurs_index') }}" class="nav-link px-2 text-white">Espace Admin</a>
+              {% endif %}
+              {% if app.user  %}
+                <img src="{{ asset(app.user.PhotoProfil) }}" alt="Logo" class="Logo" />
+                <a href="{{ path('utilisateurs_profile') }}" class="nav-link px-2 text-white">{{ app.user.pseudo }}</a>
+              {% else %}
+                <img src="{{ asset('styles/Image/Avatar_Guest.png') }}" alt="Logo" class="Logo" />
+                <a href="{{ path('app_login') }}" class="nav-link px-2 text-white">Inscription\Connexion</a>
+              {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+<section>
+    {% for Muscle in Muscles %}
+        <div>
+            {{ Muscle.muscles.nom }}</p>
+        </div>
+    {% endfor %}
+    <div>
+        <img src="{{ FicheContenu.Image1 is not empty ? asset(FicheContenu.Image1) : '#'}}" alt="premiere image" class="premiere image" />
+   </div>
+   <div>
+        <p>{{ FicheContenu.Contenu1 }}</p>
+   </div>
+   <div>
+        <p>{{ FicheContenu.Contenu2 }}</p>
+   </div>
+   <div>
+        <img src="{{ FicheContenu.Image2 is not empty ? asset(FicheContenu.Image2) : '#' }}" alt="premiere image" class="premiere image" />
+   </div>
+   <div>
+        <p>{{ FicheContenu.Contenu3 }}</p>
+   </div>    
+   <div>
+        <img src="{{ FicheContenu.Image3 is not empty ? asset(FicheContenu.Image3) : '#' }}" alt="premiere image" class="premiere image" />
+   </div> 
+   <div>
+        <h1>Etude Scientifique</h1>
+        <p>{{ FicheContenu.Etude }}</p>
+   </div>  
+        {% for commentaire in commentaires %}
+        <div class="mt-4">
+            <h3>Commentaires</h3>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                          <td><h5 class="card-title">{{ commentaire.Utilisateur.Pseudo }}</h5></td>
+                           <td class="text-end">
+                              {% if app.user and app.user.id == commentaire.Utilisateur.id %}
+                                  <a class="btn btn-primary btn-sm" href="{{ path('commentaire_edit', {'id' : FicheContenu.Fiche.id , 'com': commentaire.id}) }}">editer</a>
+                              {% endif %}
+
+                              {% if app.user and app.user.id == commentaire.Utilisateur.id or is_granted('ROLE_ADMIN')  %}
+                                <form action="{{ path('commentaire_delete', {'Fiche' : FicheContenu.Fiche.id ,'id': commentaire.id}) }}" method="post" style="display: inline;">
+
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ commentaire.id) }}">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">Supprimer</button>
+                    
+                                </form>
+                              {% endif %}
+                         </td>
+                        </tr>
+                     </table>
+                    <h6 class="card-subtitle text-muted">Le {{ commentaire.Date ? commentaire.Date|date('d-m-Y') : ''  }}</h6>
+                    <p class="card-text mt-2 text-black">{{commentaire.contenu}}</p>
+                </div>
+            </div>
+        </div>
+     {%endfor%}
+    <div>
+         <a class="btn btn-light"  href="{{ path('commentaire_new',{ 'id': FicheContenu.Fiche.id}) }}">Ajouter commentaire</a>
+    </div>     
+</section>          
+
+{% endblock %}

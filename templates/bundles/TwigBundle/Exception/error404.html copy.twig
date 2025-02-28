@@ -1,0 +1,14 @@
+{# templates/bundles/TwigBundle/Exception/error404.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<!-- http://127.0.0.1:8000/_error/404.twig  pour acceder a cette erreur-->
+    <section class="d-flex justify-content-center align-items-center flex-column">
+        <h1>Page not found</h1>
+
+        <p>
+            La page demandée n'a pas été trouvée. Vérifiez s'il y a des erreurs dans l'URL
+            ou <a class="text-primary text-decoration-underline" href="{{ path('accueil') }}">retournez à la page d'accueil</a>.
+        </p>
+    </section>
+{% endblock %}

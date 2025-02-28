@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Ajouter un utilisateur</h1>
+    <form method="post" class="mt-4">
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+
+        <div class="form-group">
+            <label for="Pseudo">Pseudo</label>
+            <input type="text"  name="Pseudo" class="form-control" required>
+        </div>
+        <div class="form-group mt-3">
+            <label for="Email">Email</label>
+            <input type="email" id="Email" name="Email" class="form-control" required>
+        </div>
+        <div class="form-group mt-3">
+            <label for="Mot_de_Passe">Mot_de_Passe</label>
+            <input type="password" id="Mot_de_Passe" name="Mot_de_Passe" class="form-control" required>
+        </div>
+        <div class="form-group mt-3">
+            <label for="roles">Rôles</label>
+            <select name="role" id="role">
+                <option value="ROLE_Utilisateur" {% if app.request.get('role') == 'ROLE_Utilisateur' %}selected{% endif %}>Utilisateur</option>
+                <option value="ROLE_ADMIN" {% if app.request.get('role') == 'ROLE_ADMIN' %}selected{% endif %}>Administrateur</option>
+            </select>
+        </div>
+
+        {% if errors is defined and errors|length > 0 %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error.message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <button type="submit" class="btn btn-success mt-3">Enregistrer</button>
+        <a href="{{ path('utilisateurs_index') }}" class="btn btn-secondary mt-3">Retour</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,213 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Fiches{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-expand-lg data-bs-theme" style=" background-color: #27252A;" data-bs-theme="dark">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="{{ path('accueil') }}"><img src="{{ asset('styles/Image/Logo Site.webp') }}" alt="Logo" class="Logo" /></a>
+
+      <button class="navbar-toggler btn-light" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ path('accueil') }}">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{{ path('liste_fiches') }}">Liste des exercices</a>
+          </li>
+        </ul>
+        <div>
+          <ul class="d-flex flex-row nav col-12  align-items-center justify-content-center">
+              {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('utilisateurs_index') }}" class="nav-link px-2 text-white">Espace Admin</a>
+              {% endif %}
+              {% if app.user  %}
+                <img src="{{ asset(app.user.PhotoProfil) }}" alt="Logo" class="Logo" />
+                <a href="{{ path('utilisateurs_profile') }}" class="nav-link px-2 text-white">{{ app.user.pseudo }}</a>
+                <a href="{{ path('app_logout') }}" class="nav-link border-1 border-white">
+                  <img src="{{ asset("styles/Image/logout.png") }}" alt="logo de déconnetion" width = "20px" class="ms-2"/>
+                </a>
+                
+              {% else %}
+                <img src="{{ asset('styles/Image/Avatar_Guest.png') }}" alt="Logo" class="Logo" />
+                <a href="{{ path('app_login') }}" class="nav-link px-2 text-white">Inscription\Connexion</a>
+              {% endif %}
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+<form action="{{ path('liste_fiches') }}" method='post'>
+  <header class="baniere">
+    <div class="Barre text-center">
+      <input type="text" class="form-control" name="recherche" id="recherche" placeholder="Rechercher une fiche"
+        value="{{ recherche ?? '' }}" />
+      <button type="submit" class="btn btn-secondary btn-sm mt-2 mb-2">Rechercher</button>
+    </div>
+  </header>
+
+  <div class="d-flex justify-content-between align-item-center bg-dark m-3">
+    <div class="form-group m-1">
+      <label for="filtreCategorie">Filtre Par Categorie</label>
+      <select name="filtreCategorie" id="filtreCategorie">
+        <option value=0>-- Toutes les catégories --</option>
+        {% for categorie in categories %}
+          <option value="{{ categorie.id }}" {% if selectCategorie == categorie.id %}selected{% endif %}>
+            {{ categorie.nom }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group m-1">
+      <label for="filtreType">Types</label>
+      <select name="filtreType" id="filtretype">
+        <option value=0>-- Tout les types --</option>
+        {% for type in types %}
+          <option value="{{ type.id }}" {% if selectType == type.id %}selected{% endif %}>
+            {{ type.nom }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group m-1">
+      <label for="filtreDifficulte">Difficulté</label>
+      <select name="filtreDifficulte" id="filtreDifficulte">
+        <option value=0 >-- Toutes les difficultés --</option>
+        {% for difficulte in difficultes %}
+          <option value="{{ difficulte.id }}" {% if selectDifficulte == difficulte.id %}selected{% endif %}>
+            {{ difficulte.nom }}
+          </option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-light btn-sm">Rechercher</button>
+      <a href="{{ path('liste_fiches') }}" class="btn btn-secondary bg-secondary btn-sm">X</a>
+    </div>
+  </div>
+</form>
+
+<main>
+  <section>
+    <div class="TitreExo">
+      <h1>Liste des exercices</h1>
+    </div>
+    <div class="container text-center" style="margin-top: 100px;">
+      <div class="row">
+        {% for fiche in fiches %}
+          <article class="col">
+            <a href="{{ path('fiche_show', {'id': fiche.id}) }}">
+              <div class="card" id="Fiche">
+                <img src="{{ fiche.Photo }}" class="Fiche-Image" height="238">
+                <div class="Body-Fiche">
+                  <div class="Titre-Fiche">
+                    <h5>{{ fiche.Nom }}</h5>
+                  </div>
+                  <p style="text-align: center;">{{ fiche.Description }}</p>
+                  <div class="Info">
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="{{ asset('styles/Image/Barre.jpg') }}" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">{{ fiche.Type.nom }}</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="{{ asset('styles/Image/Pec.png') }}" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type" style="font-size: x-small;">{{ fiche.Categorie.nom }}</p>
+                      </div>
+                    </div>
+
+                    <div class="Type">
+                      <div class="DivImage">
+                        <img src="{{ asset('styles/Image/Biceps.png') }}" alt="" class="Image">
+                      </div>
+                      <div class="TypeText">
+                        <p id="Type">{{ fiche.Difficulte.nom }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+        {% endfor %}
+      </div>
+      <div class="d-flex justify-content-center">
+        {% if page > 1 %}
+          <a href="{{ path('liste_fiches', {'page': page - 1}) }}" class="btn btn-primary">Précédent</a>
+        {% endif %}
+        {% if page < maxPage %}
+          <a href="{{ path('liste_fiches', {'page': page + 1}) }}" class="btn btn-primary">Suivant</a>
+        {% endif %}  
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  <div class="FooterForm">
+    <div class="TitreForm">
+      <h1>Contactez-Nous</h1>
+    </div>
+
+    <div class="Contact">
+      <form action="">
+        <div class="row justify-content-center mb-3">
+          <div class="col-2">
+            <label for="Name" class="form-label">Nom :</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="Name" placeholder="Nom">
+          </div>
+          <div class="col-2">
+            <label for="Surname" class="form-label">Prenom :</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="Surname" placeholder="Prenom">
+          </div>
+        </div>
+
+        <div class="row justify-content-center mb-3">
+          <div class="col-2">
+            <label for="Email" class="form-label">Email :</label>
+          </div>
+          <div class="col-10">
+            <input type="email" class="form-control" id="Email" placeholder="name@example.com">
+          </div>
+        </div>
+
+        <div class="text-center m-0">
+          <label for="Commentaire" class="form-label">Commentaire :</label>
+          <textarea class="form-control" id="Commentaire" rows="3"></textarea>
+        </div>
+      </form>
+      <button type="submit" class="btn btn-outline-light m-3 w-25">Envoyer</button>
+    </div>
+  </div>
+  <div class="FooterNav">
+    <div class="FootLink">
+      © 2024 Wikout
+    </div>
+    <div class="FootLink">
+      <a href="">Confidentialité et cookies</a>
+    </div>
+    <div class="FootLink">
+      <a href="{{ path('condition_utilisation') }}">Conditions d’utilisation</a>
+    </div>
+  </div>
+</footer>
+{% endblock %}
