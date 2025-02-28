@@ -6,6 +6,7 @@ use App\Entity\Fiches;
 use App\Entity\Categorie;
 use App\Entity\FicheContenu;
 use App\Entity\FicheMuscles;
+use App\Service\MongoDBService;
 use App\Repository\TypeRepository;
 use App\Repository\FichesRepository;
 use App\Repository\MusclesRepository;
@@ -19,10 +20,10 @@ use App\Repository\UtilisateursRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[Route('/fiches')]
@@ -30,12 +31,13 @@ class FichesController extends AbstractController
 {
 
     #[Route('/', name: 'fiches_index', methods: ['GET', 'POST'])]
-    public function index(FichesRepository $fichesRepository, CategoriesRepository $categoriesRepository,DifficulteRepository $difficulteRepository,TypeRepository $typesRepository, Request $request): Response
+    public function index( MongoDBService $mongoDBService ,FichesRepository $fichesRepository, CategoriesRepository $categoriesRepository,DifficulteRepository $difficulteRepository,TypeRepository $typesRepository, Request $request): Response
     {   
         $categories = $categoriesRepository->findAll(); // Récupère toutes les catégories
         $difficultes = $difficulteRepository->findAll(); // Récupère toutes les difficultes
         $types = $typesRepository->findAll(); // Récupère toutes les type
 
+        $mongoDBService->inserVisit('fiches');
 
         // Récupération des valeurs des filtres
         $Recherche = $request->request->get('recherche'); // Mot-clé pour la recherche

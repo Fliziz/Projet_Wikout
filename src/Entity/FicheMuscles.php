@@ -17,7 +17,7 @@ class FicheMuscles
     #[ORM\JoinColumn(nullable: false)]
     private ?FicheContenu $Fiche_Contenu = null;
 
-    #[ORM\OneToOne (cascade: ["remove"])]
+    #[ORM\OneToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Muscles $Muscles = null;
 

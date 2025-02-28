@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ListeFichesController extends AbstractController
 {
     #[Route('/liste/fiches', name: 'liste_fiches')]
-    public function index(FichesRepository $fichesRepository, CategoriesRepository $categoriesRepository, TypeRepository $typesRepository, DifficulteRepository $difficultesRepository , Request $request): Response
+    public function index(MongoDBService $mongoDBService ,FichesRepository $fichesRepository, CategoriesRepository $categoriesRepository, TypeRepository $typesRepository, DifficulteRepository $difficultesRepository , Request $request): Response
     {   
         // Pagination
         $page = $request->query->getInt('page',1);
@@ -26,6 +26,7 @@ class ListeFichesController extends AbstractController
         $selectDifficulte = $request->request->get('filtreDifficulte');    
         $selectType = $request->request->get('filtreType');    
 
+        $mongoDBService->inserVisit('liste_fiches');
 
         if ($Recherche || $selectCategorie || $selectDifficulte || $selectType ) {
             // Si des filtres sont appliqués, on recherche avec les critères
