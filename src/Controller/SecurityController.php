@@ -5,16 +5,17 @@
 namespace App\Controller;
 
 use App\Entity\Utilisateurs;
+use App\Service\MongoDBService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route; // On importe l'annotation Route pour définir les routes de ce contrôleur
 use Symfony\Component\HttpFoundation\Response; // On importe la classe Response, qui est utilisée pour envoyer des réponses HTTP
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController; // On importe la classe de base AbstractController de Symfony, qui permet d'utiliser les méthodes de base pour un contrôleur
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils; // On importe AuthenticationUtils pour gérer l'authentification et récupérer des informations sur l'utilisateur connecté (erreurs de connexion, dernier nom d'utilisateur)
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SecurityController extends AbstractController // Déclaration de la classe SecurityController qui étend AbstractController, ce qui permet d'hériter de nombreuses méthodes utiles pour le contrôleur
 {
@@ -35,9 +36,11 @@ class SecurityController extends AbstractController // Déclaration de la classe
     public function logout(): void {} // Méthode vide pour gérer la déconnexion. Symfony gère automatiquement la déconnexion, donc cette méthode ne nécessite pas de code
 
     #[Route('/inscription', name: 'inscription', methods: ['GET', 'POST'])]
-    public function inscription( CsrfTokenManagerInterface $csrfTokenManager,Request $request,EntityManagerInterface $em,ValidatorInterface $validator,UserPasswordHasherInterface $passwordHasher ): Response 
+    public function inscription(MongoDBService $mongoDBService,CsrfTokenManagerInterface $csrfTokenManager,Request $request,EntityManagerInterface $em,ValidatorInterface $validator,UserPasswordHasherInterface $passwordHasher ): Response 
     {
         $csrfToken = $csrfTokenManager->getToken('inscription')->getValue();
+
+        $mongoDBService->inserVisit('inscription');
 
         if ($request->isMethod('POST')) { // Vérifie si le formulaire a été soumis
 
