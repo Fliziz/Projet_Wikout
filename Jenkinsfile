@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Cloner le dépôt') {
             steps {
-                sh "rm -rf ${DEPLOY_DIR}" // Nettoyage du précédent build
+                sh "rm -rf ${DEPLOY_DIR}"     // Nettoyage du précédent build
                 sh "git clone -b ${GIT_BRANCH} ${GIT_REPO} ${DEPLOY_DIR}"
             }
         }
@@ -27,12 +27,35 @@ pipeline {
             steps {
                 script {
                     def envLocal = """
-                    APP_ENV=prod
-                    APP_DEBUG=1
-                    DATABASE_URL=mysql://root:routitop@127.0.0.1:3306/${DEPLOY_DIR}?serverVersion=8.3.0&charset=utf8mb4
+                        APP_ENV=prod
+                        APP_DEBUG=1
+                        DATABASE_URL=mysql://root:routitop@127.0.0.1:3306/${DEPLOY_DIR}?serverVersion=8.3.0&charset=utf8mb4
                     """.stripIndent()
 
                     writeFile file: "${DEPLOY_DIR}/.env.local", text: envLocal
+                }
+            }
+        }
+
+        stage('Configuration de l\'environnement de test') {
+            steps {
+                dir("${DEPLOY_DIR}") {
+                    script {
+                        def envTestFile = "${DEPLOY_DIR}/.env.test"
+                        def dbUrl = "DATABASE_URL=mysql://root:routitop@127.0.0.1:3306/${DEPLOY_DIR}?serverVersion=8.3.0&charset=utf8mb4"
+                        
+                        sh """
+                            if [ ! -f .env.test ]; then
+                                touch .env.test
+                            fi
+                            
+                            if grep -q '^DATABASE_URL=' .env.test; then
+                                sed -i 's|^DATABASE_URL=.*|${dbUrl}|' .env.test
+                            else
+                                echo '${dbUrl}' >> .env.test
+                            fi
+                        """
+                    }
                 }
             }
         }
@@ -65,8 +88,8 @@ pipeline {
 
         stage('Déploiement') {
             steps {
-                sh "rm -rf /var/www/html/${DEPLOY_DIR}" // Supprime le dossier de destination
-                sh "mkdir /var/www/html/${DEPLOY_DIR}" // Recréé le dossier de destination
+                sh "rm -rf /var/www/html/${DEPLOY_DIR}"    // Supprime le dossier de destination
+                sh "mkdir /var/www/html/${DEPLOY_DIR}"     // Recréé le dossier de destination
                 sh "cp -rT ${DEPLOY_DIR} /var/www/html/${DEPLOY_DIR}"
                 sh "chmod -R 775 /var/www/html/${DEPLOY_DIR}/var"
             }
