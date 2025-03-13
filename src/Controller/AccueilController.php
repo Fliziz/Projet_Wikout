@@ -23,8 +23,14 @@ class AccueilController extends AbstractController
     }
 
     #[Route('/ConditionUtilisation', name: 'condition_utilisation')]
-    public function condition(): Response
+    public function affichage_utilisation(): Response
     {
         return $this->render('accueil/ConditionUtilisation.html.twig');
+    }
+
+    #[Route('/ConfidentialiteEtCookies', name: 'confidentialite_cookies')]
+    public function affichage_cookies(): Response
+    {
+        return $this->render('accueil/ConfidentialiteEtCookies.html.twig');
     }
 }

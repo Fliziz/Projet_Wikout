@@ -1,12 +1,13 @@
 body{
-    background-color: #27252A;
+    background-color: #2b292e;
 }
 
 
-p,h1,h2,h3,h4,h5,h6,a,label{
+p,h1,h2,h3,h4,h5,h6,a,label,li{
     color: white;
     margin: 0;
     text-decoration: none;
+    list-style: none;
 }
 
 /*Nav*/
@@ -118,8 +119,9 @@ p,h1,h2,h3,h4,h5,h6,a,label{
     justify-content: center;
 }
 
-#Type{
+#Tag{
     color: black;
+    font-size: x-small;
 }
 
 .Voir-Plus{
@@ -147,7 +149,7 @@ p,h1,h2,h3,h4,h5,h6,a,label{
 footer{
     width: 100%;
     height: 530px;
-    background-color: #312D34;
+    background-color: #27252A;
 }
 .FooterForm{
     display: flex;
@@ -182,73 +184,110 @@ footer{
     color: white;
 }
 
-@media screen and (min-width : 375px) and (max-width : 480px) {/* Telephone */
-    .baniere{
-        height: 200px;
-    }
+/*Page Fiches-Show ---------------------------------------------------------------*/  
 
-    #card-container{
-        width: 400px;
-    }
-    
-   #Fiche{
-    margin: 20px auto 20px auto;
-    }
+ .article-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 20px;
+    border-radius: 15px;
+    background-color: #27252A;
+  }
 
-    .Contact{
-        width: auto;
-        font-size: 8px;
-    }
-}
+  .article-header {
+    text-align: center;
+    padding-top: 2rem;
 
+  }
 
-@media screen and (max-width : 900px) {/* Tablette */
-    .baniere{
-        height: 300px;
-    }
-    
-   #Fiche{
-        margin: 15px;
-    }
+  .article-header h1 {
+    font-size: 50px;
+  }
+  
+  .muscle-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+    justify-content: center;
+  }
 
-    #card-container{
-        width: 780px;
-    }
-    
-    .Contact{
-        width: auto;
-        font-size: 8px;
-    }
-}
+  .muscle-tag {
+    background: #f0f0f0;
+    padding: 5px 15px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
 
+  .article-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 1.5rem 0;
+    border-radius: 8px;
+  }
 
+  .article-section {
+    margin: 2rem 0;
+    line-height: 1.6;
+  }
+
+  .article-etude {
+    background: #f8f9fa;
+    color: black;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+  }
+
+  .article-etude h2 {
+    color: black;
+    text-decoration: underline;
+    margin-bottom: 1rem;
+  }
+
+  .comments-section {
+    margin-top: 3rem;
+    border-top: 1px solid #dee2e6;
+    padding-top: 2rem;
+  }
+
+  .comment-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin: 1rem 0 1rem 0;
+    padding: 1rem;
+  }
+
+  .comment-card p {
+    color: black;
+  }
+
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
 
 /*Page Liste des excercice-----------------------------------------------*/
-.FiltreExo{
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-    width: 100%;
-    height: 40px;
-}
-.FiltreExoFleche{
-    text-align: center;
-    border: white solid ;
-    color: white;
-    height: 100%;
-    width: 40px;
-}
-.FiltreExoLettre{
-    text-align: center;
-    border: white solid ;
-    color: white;
-    height: 100%;
-    width: 40px;
-}
+    
+    .labelliste{
+        margin-right: 1rem;
+        width: max-content;
+    }
 
-.FiltreExoLettre:hover{
-    background-color: black;
-}
+    .form-group{
+        width: min-content;
+    }
+
+    #filtreCategorie , #filtreType , #filtreDifficulte {
+        border: none;
+        border-radius: 5px;
+        height: 40px;
+    }
+
 
 .Footer-LEX{
     height: 100px;
@@ -385,4 +424,51 @@ footer{
     color: #000000;
 }
 
+@media only screen and (max-width: 700px) {/* Telephone */
+
+    .baniere{
+        height: 175px;
+    }
+
+    #card-container{
+        width: 400px;
+    }
+    
+   #Fiche{
+    margin: 20px auto 20px auto;
+    }
+
+    .Contact{
+        width: auto;
+        font-size: 8px;
+    }
+
+    #hide{
+        display: none;
+    }
+}
+
+
+@media screen and (min-width: 700px) and (max-width: 900px) {/* Tablette */
+    .baniere{
+        height: 300px;
+    }
+    
+   #Fiche{
+        margin: 15px;
+    }
+
+    #card-container{
+        width: 780px;
+    }
+    
+    .Contact{
+        width: auto;
+        font-size: 8px;
+    }
+
+    #hide{
+        display: none;
+    }
+}
 /* ---------------------------------Bootsrap--------------------------------------------------------------*/
