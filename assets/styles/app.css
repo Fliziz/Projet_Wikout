@@ -278,9 +278,6 @@ footer{
         width: max-content;
     }
 
-    .form-group{
-        width: min-content;
-    }
 
     #filtreCategorie , #filtreType , #filtreDifficulte {
         border: none;
