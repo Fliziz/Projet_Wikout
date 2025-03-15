@@ -62,7 +62,7 @@ class FichesController extends AbstractController
 
     #[Route('/admin/newPreview', name: 'fiches_newPreview', methods: ['GET', 'POST'])] // La route '/newPreview' pour afficher le formulaire de création et traiter l'envoi du formulaire
 
-    public function newPreview(CsrfTokenManagerInterface $csrfTokenManager,Request $request, EntityManagerInterface $em , UtilisateursRepository $utilisateursRepository , CategoriesRepository $categoriesRepository , TypeRepository $typeRepository , DifficulteRepository $difficulteRepository ): Response 
+    public function newPreview(ValidatorInterface $validator, CsrfTokenManagerInterface $csrfTokenManager,Request $request, EntityManagerInterface $em , UtilisateursRepository $utilisateursRepository , CategoriesRepository $categoriesRepository , TypeRepository $typeRepository , DifficulteRepository $difficulteRepository ): Response 
     // La méthode newPreview() permet de crée les petites fiches ou les utilisateurs peuvent cliquer dessus pour accéder au contenu
     //Request (requete http) qui permet de recupere la requete d'un formulaire, EntityManager permet gérer les intéraction entre les entités
     //Pour finir on inporte les Repository pour permet d'utiliser les methodes de base des repository qui nous permete de faire des requetes SQL
@@ -117,7 +117,7 @@ class FichesController extends AbstractController
         
             $fiche->setDifficulte($difficultes); 
 
-            $errors = $validator->validate($user);
+            $errors = $validator->validate($fiche);
             
             if (count($errors) > 0) {
                 return $this->render('error.html.twig', [
