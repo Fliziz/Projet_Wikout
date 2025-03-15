@@ -9,6 +9,7 @@ use App\Repository\DifficulteRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Service\MongoDBService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ListeFichesController extends AbstractController

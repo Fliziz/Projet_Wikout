@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Conditions d'Utilisation - Wikout{% endblock %}
 
 {% block body %}
 <nav class="navbar navbar-expand-lg data-bs-theme" style=" background-color: #27252A;" data-bs-theme="dark">
@@ -45,102 +45,84 @@
       </div>
     </div>
   </nav>
+<div class="container my-5 text-center">
+<div class="container privacy-policy">
+  <h1 class="text-center mb-4">Politique de Confidentialité et Cookies</h1>
 
-  <header class="baniere">
+  <section class="mb-4">
+    <h2>1. Introduction</h2>
+    <p>Bienvenue sur Wikout. La protection de votre vie privée est essentielle pour nous. Cette politique explique comment nous collectons, utilisons et protégeons vos données personnelles et l'utilisation des cookies sur notre site.</p>
+  </section>
 
-    <form action="{{ path('liste_fiches') }}" method='post' class="Barre">
-      <div class=" text-center d-flex">
-        <input type="text" class="form-control" name="recherche" id="recherche" placeholder="Rechercher une fiche"
-          value="{{ recherche ?? '' }}" />
-        <button type="submit" class="btn btn-secondary btn-sm ms-2">Rechercher</button>
-      </div>
-    </form>
+  <section class="mb-4">
+    <h2>2. Données collectées</h2>
+    <p>Nous pouvons collecter les types de données suivants :</p>
+    <ul>
+      <li>Informations fournies volontairement (nom, adresse e-mail, etc.).</li>
+      <li>Données de navigation (adresse IP, type de navigateur, pages visitées, etc.).</li>
+      <li>Cookies et technologies similaires pour améliorer votre expérience utilisateur.</li>
+    </ul>
+  </section>
 
-  </header>
+  <section class="mb-4">
+    <h2>3. Utilisation des données</h2>
+    <p>Nous utilisons ces données pour :</p>
+    <ul>
+      <li>Gérer et améliorer notre site.</li>
+      <li>Personnaliser votre expérience utilisateur.</li>
+      <li>Assurer la sécurité et prévenir la fraude.</li>
+      <li>Respecter nos obligations légales.</li>
+    </ul>
+  </section>
 
-  <main>
-    <section>
+  <section class="mb-4">
+    <h2>4. Partage des données</h2>
+    <p>Nous ne vendons ni ne louons vos données personnelles. Cependant, nous pouvons les partager avec :</p>
+    <ul>
+      <li>Nos prestataires de services (hébergement, analyse web, etc.).</li>
+      <li>Autorités légales si requis par la loi.</li>
+    </ul>
+  </section>
 
-      <div class="TitreExo">
-        <h1>Dernier exercices ajoutée </h1>
-      </div>
-      
-      <div class="container text-center d-flex flex-wrap " style="margin-top: 100px;">
+  <section class="mb-4">
+    <h2>5. Cookies et technologies similaires</h2>
+    <p>Les cookies sont de petits fichiers stockés sur votre appareil. Nous utilisons des cookies pour :</p>
+    <ul>
+      <li>Assurer le bon fonctionnement du site.</li>
+      <li>Analyser le trafic et améliorer nos services.</li>
+      <li>Personnaliser le contenu affiché.</li>
+    </ul>
+    <p>Vous pouvez gérer vos préférences de cookies via les paramètres de votre navigateur.</p>
+  </section>
 
-        <div class="row">
-        {% for fiche in fiches %}
-          <article class="col mt-2">
-            <a href="{{ path('fiche_show',{'id' : fiche.id}) }}">
-              <div class="card" id="Fiche">
-                <img src="{{ fiche.Photo }}" class="Fiche-Image" height="238">
-                <div class="Body-Fiche">
-                  <div class="Titre-Fiche">
-                    <h5>{{ fiche.Nom }}</h5>
-                  </div>
-                  <p style="text-align: center;">{{ fiche.Description }}</p>
-                  <div class="Info">
+  <section class="mb-4">
+    <h2>6. Sécurité des données</h2>
+    <p>Nous mettons en place des mesures de sécurité adaptées pour protéger vos informations contre tout accès non autorisé, perte ou altération.</p>
+  </section>
 
-                    <div class="Type">
-                      <div class="DivImage">
-                        <img src="{{ asset('styles/Image/Barre.jpg') }}" alt="" class="Image">
-                      </div>
-                      <div class="TypeText">
-                        <p id="Tag" >{{ fiche.Type.nom }}</p>
-                      </div>
-                    </div>
+  <section class="mb-4">
+    <h2>7. Vos droits</h2>
+    <p>Conformément à la réglementation applicable, vous disposez des droits suivants :</p>
+    <ul>
+      <li>Accéder à vos données personnelles.</li>
+      <li>Demander leur rectification ou suppression.</li>
+      <li>Vous opposer à leur traitement ou en limiter l'usage.</li>
+      <li>Retirer votre consentement à tout moment.</li>
+    </ul>
+  </section>
 
-                    <div class="Type">
-                      <div class="DivImage">
-                        <img src="{{ asset('styles/Image/Pec.png') }}" alt="" class="Image">
-                      </div>
-                      <div class="TypeText">
-                        <p id="Tag" >{{ fiche.Categorie.nom }}</p>
-                      </div>
-                    </div>
+  <section class="mb-4">
+    <h2>8. Modifications de la politique</h2>
+    <p>Nous pouvons mettre à jour cette politique à tout moment. La version la plus récente sera toujours disponible sur cette page.</p>
+  </section>
 
-                    <div class="Type">
-                      <div class="DivImage">
-                        <img src="{{ asset('styles/Image/Biceps.png') }}" alt="" class="Image">
-                      </div>
-                      <div class="TypeText">
-                        <p id="Tag">{{ fiche.Difficulte.nom }}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </article>
-        {% endfor %} 
+  <section class="mb-4">
+    <h2>9. Contact</h2>
+    <p>Pour toute question relative à cette politique, contactez-nous à : Wikout@gmail.com .</p>
+  </section>
+</div>
 
-        <section>
-          <div class="row Voir-Plus" style="margin-top : 50px;">
-            <!--Summary et la balise pour réveler des information en l'ocurrance on revele les autres article-->
-            <article class="col ">
-              <div class="Voir-Plus-Fiche">
-
-              </div>
-            </article>
-            <article class="col" id="hide">
-              <div class="Voir-Plus-Fiche" >
-
-              </div>
-            </article>
-            <article class="col" id="hide">
-              <div class="Voir-Plus-Fiche">
-
-              </div>
-            </article>
-          </div>
-          <form action="{{ path('liste_fiches') }}">
-            <button class="bouton-voir-plus"> &darr; Voir plus</button>
-          </form>
-        </section>
-      </div>
-    </section>
-  </main>
-
-  <footer>
+<footer>
     <div class="FooterForm">
       <div class="TitreForm">
         <h1>Contactez-Nous</h1>
@@ -187,10 +169,10 @@
         © 2024 Wikout
       </div>
       <div class="FootLink">
-        <a href="{{ path('confidentialite_cookies') }}">Confidentialité et cookies</a>
+        <a href="">Confidentialité et cookies</a>
       </div>
       <div class="FootLink">
-        <a href="{{ path('condition_utilisation') }}">Conditions d’utilisation</a>
+        <a href="">Conditions d’utilisation</a>
       </div>
     </div>
   </footer>
