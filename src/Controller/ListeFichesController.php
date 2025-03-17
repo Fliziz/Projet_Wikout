@@ -2,21 +2,25 @@
 
 namespace App\Controller;
 
-use App\Repository\FichesRepository;
+use App\Service\MongoDBService;
 use App\Repository\TypeRepository;
+use App\Repository\FichesRepository;
 use App\Repository\CategoriesRepository;
 use App\Repository\DifficulteRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Service\MongoDBService;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ListeFichesController extends AbstractController
 {
     #[Route('/liste/fiches', name: 'liste_fiches')]
-    public function index(MongoDBService $mongoDBService ,FichesRepository $fichesRepository, CategoriesRepository $categoriesRepository, TypeRepository $typesRepository, DifficulteRepository $difficultesRepository , Request $request): Response
+    public function index(CsrfTokenManagerInterface $csrfTokenManager,MongoDBService $mongoDBService ,FichesRepository $fichesRepository, CategoriesRepository $categoriesRepository, TypeRepository $typesRepository, DifficulteRepository $difficultesRepository , Request $request): Response
     {   
+
+        $csrfToken = $csrfTokenManager->getToken('contact')->getValue();
+
         // Pagination
         $page = $request->query->getInt('page',1);
         $limit = 6;
@@ -58,6 +62,8 @@ class ListeFichesController extends AbstractController
             'categories' => $categories,
             'types'=> $types,
             'difficultes'=> $difficultes,
+            //
+            'csrf_token' => $csrfToken,
         ]);
     }
 }

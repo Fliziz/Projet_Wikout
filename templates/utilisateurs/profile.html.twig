@@ -136,11 +136,11 @@
                             <input type="email" aria-describedby="emailHelp" name="Email" class="form-control" value="{{ Utilisateur.Email }}">
                         </div>
                         <div class="mb-3 row justify-content-center">
-                            <div class="col-3">
+                            <div class="col-6">
                                 <label for="Age" class="form-label">Age</label>
                                 <input type ="date" name="Age" class="form-control" value="{{ Utilisateur.Age ? Utilisateur.Age|date('Y-m-d') : '' }}">
                             </div>
-                            <div class="col-3">
+                            <div class="col-6">
                                 <label for="Genre" class="form-label">Genre</label>
                                     <select class="form-control" name="Genre" id="Genre">
                                     <option value="">--</option>
@@ -153,7 +153,7 @@
                         <div class="text-center">
                             <div class="mb-3">
                                 <label for="description" class="form-label">Description</label>
-                                <textarea name="description" rows="5" cols="90%" value="{{ Utilisateur.Description }}"></textarea>
+                                <textarea name="description" class="description"  value="{{ Utilisateur.Description }}"></textarea>
                             </div>
                         </div>
                         <div class="w-100 text-center">
@@ -167,10 +167,10 @@
                     <h1 class="text-decoration-underline">Fonctionalité</h1>
                     <div class="d-flex">
                         <div class="Fonction">
-                            <h1 class="text-decoration-underline"> Gestionnaire de séance</h1>
+                            <h1 class="titrefonc"> Gestionnaire de séance</h1>
                         </div>
                         <div class="Fonction">
-                            <h1 class="text-decoration-underline">Suivi de Calories</h1>
+                            <h1 class="titrefonc">Suivi de Calories</h1>
                         </div>
                     </div>
                 </div>

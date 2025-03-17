@@ -14,11 +14,11 @@ class Commentaires
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ["persist", "remove"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?FicheContenu $FicheContenu = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ["persist", "remove"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateurs $Utilisateur = null;
 

@@ -92,7 +92,7 @@
     </div>
 
     <section class="comments-section">
-      <h2 class="text-de">Commentaires :</h2>
+      <h2 class="comment">Commentaires :</h2>
       {% for commentaire in commentaires %}
         <div class="comment-card">
           <div class="comment-header">
@@ -116,9 +116,12 @@
         </div>
       {% endfor %}
 
-      <div class="text-center mt-4">
-        <a class="btn btn-primary mb-4" href="{{ path('commentaire_new', {'id': FicheContenu.Fiche.id}) }}">Ajouter un commentaire</a>
-      </div>
+      {% if app.user %}
+        <div class="text-center mt-4">
+            <a class="btn btn-primary mb-4" href="{{ path('commentaire_new', {'id': FicheContenu.Fiche.id}) }}">Ajouter un commentaire</a>
+        </div>
+      {% endif %}
+      
     </section>
   </article>
 
