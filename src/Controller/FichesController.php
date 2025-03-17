@@ -33,6 +33,8 @@ class FichesController extends AbstractController
     #[Route('/', name: 'fiches_index', methods: ['GET', 'POST'])]
     public function index( MongoDBService $mongoDBService ,FichesRepository $fichesRepository, CategoriesRepository $categoriesRepository,DifficulteRepository $difficulteRepository,TypeRepository $typesRepository, Request $request): Response
     {   
+
+
         $categories = $categoriesRepository->findAll(); // Récupère toutes les catégories
         $difficultes = $difficulteRepository->findAll(); // Récupère toutes les difficultes
         $types = $typesRepository->findAll(); // Récupère toutes les type
@@ -276,20 +278,20 @@ class FichesController extends AbstractController
     #[Route('/{id}/admin/delete', name:  'fiches_delete', methods: ['POST'])] // La route '/{id}/delete' permet de supprimer un fiche
     public function delete(Fiches $fiche, FicheContenuRepository $ficheContenuRepository , FicheMusclesRepository $FMRepository ,EntityManagerInterface $em): Response // La méthode delete() permet de supprimer un fiche existant
     {   
-        $ficheContenu = $ficheContenuRepository->findOneBy(['Fiche' => $fiche ]);
-        $ficheMuscles = $FMRepository->findBy(['Fiche_Contenu' => $fiche ]);
-
+        $ficheContenu = $ficheContenuRepository->findOneBy(['Fiche' => $fiche]);
         
-
-        for ($muscle = 0 ;$muscle < count($ficheMuscles) ; $muscle++){
-            $em->remove($ficheMuscles[$muscle]); // Supprime les muscles de la base de données
+        if ($ficheContenu) {
+            $ficheMuscles = $FMRepository->findBy(['Fiche_Contenu' => $ficheContenu]);
+            
+            foreach ($ficheMuscles as $muscle) {
+                $em->remove($muscle); // Supprime les muscles de la base de données
+            }
+            
+            $em->remove($ficheContenu); // Supprime le contenu de la fiche
         }
-
-        if($fiche == $ficheContenu->getFiche()){
-            $em->remove($ficheContenu); // Supprime une fiche de la base de données
-            $em->remove($fiche); // Supprime une fiche de la base de données	
-            $em->flush(); // Sauvegarde la suppression dans la base de données
-        }
+        
+        $em->remove($fiche); // Supprime la fiche
+        $em->flush(); // Sauvegarde la suppression dans la base de données
 
         return $this->redirectToRoute('fiches_index'); // Redirige vers la liste des utilisateurs après suppression
     }

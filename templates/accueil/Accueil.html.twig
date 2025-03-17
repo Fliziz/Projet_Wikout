@@ -148,41 +148,42 @@
 
       <div class="Contact">
 
-        <form action="">
+        <form action="{{ path('contact_new') }}" method="post">
+
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
 
           <div class="row justify-content-center mb-3">
             <div class=" col-2">
-              <label for="Name" class="form-label">Nom :</label>
+              <label for="nom" class="form-label">Nom :</label>
             </div>
             <div class="col-4">
-              <input type="text" class="form-control" id="Name" placeholder="Nom">
+              <input type="text" class="form-control" name="nom" id="nom" placeholder="Nom">
             </div>
             <div class="col-2">
-              <label for="Surname" class="form-label">Prenom :</label>
+              <label for="prenom" class="form-label">Prenom :</label>
             </div>
             <div class="col-4">
-              <input type="text" class="form-control" id="Surname" placeholder="Prenom">
+              <input type="text" class="form-control" name="prenom" id="prenom" placeholder="Prenom">
             </div>
           </div>
 
           <div class="row justify-content-center mb-3">
             <div class=" col-2">
-              <label for="Email" class="form-label">Email :</label>
+              <label for="email" class="form-label">Email :</label>
             </div>
             <div class="col-10">
-              <input type="email" class="form-control" id="Email" placeholder="name@example.com">
+              <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
             </div>
           </div>
 
           <div class="text-center m-0">
-            <label for="Commentaire" class="form-label">Commentaire :</label>
-            <textarea class="form-control" id="Commentaire" rows="3"></textarea>
+            <label for="description" class="form-label">Description :</label>
+            <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+            <button type="submit" class="btn btn-outline-light m-3 w-25">Envoyer</button>
           </div>
         </form>
-        <button type="submit" class="btn btn-outline-light m-3 w-25">Envoyer</button>
-      </div>
     </div>
-    <div class="FooterNav">ù
+    <div class="FooterNav">
       <div class="FootLink">
         © 2024 Wikout
       </div>

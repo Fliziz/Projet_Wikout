@@ -13,8 +13,8 @@ class FicheMuscles
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne (cascade: ["remove"])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(cascade: ["persist"])]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?FicheContenu $Fiche_Contenu = null;
 
     #[ORM\OneToOne]

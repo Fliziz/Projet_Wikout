@@ -50,7 +50,7 @@
     <div class="Barre text-center">
       <input type="text" class="form-control" name="recherche" id="recherche" placeholder="Rechercher une fiche"
         value="{{ recherche ?? '' }}" />
-      <button type="submit" class="btn btn-secondary btn-sm mt-2 mb-2">Rechercher</button>
+      <button type="submit" class="btn btn-secondary btn-sm btnRecherche">Rechercher</button>
     </div>
   </header>
 
@@ -58,7 +58,7 @@
       <h1>Liste des exercices :</h1>
   </div>
     
-  <div class="d-flex justify-content-between align-items-center m-3">
+  <div class="filtre m-3">
 
     <div class="form-group d-flex  align-items-center ">
       <label class="labelliste" for="filtreCategorie">Filtre Par Categorie</label>
@@ -164,56 +164,59 @@
   </section>
 </main>
 
-<footer>
-  <div class="FooterForm">
-    <div class="TitreForm">
-      <h1>Contactez-Nous</h1>
-    </div>
+ <footer>
+    <div class="FooterForm">
+      <div class="TitreForm">
+        <h1>Contactez-Nous</h1>
+      </div>
 
-    <div class="Contact">
-      <form action="">
-        <div class="row justify-content-center mb-3">
-          <div class="col-2">
-            <label for="Name" class="form-label">Nom :</label>
-          </div>
-          <div class="col-4">
-            <input type="text" class="form-control" id="Name" placeholder="Nom">
-          </div>
-          <div class="col-2">
-            <label for="Surname" class="form-label">Prenom :</label>
-          </div>
-          <div class="col-4">
-            <input type="text" class="form-control" id="Surname" placeholder="Prenom">
-          </div>
-        </div>
+      <div class="Contact">
 
-        <div class="row justify-content-center mb-3">
-          <div class="col-2">
-            <label for="Email" class="form-label">Email :</label>
-          </div>
-          <div class="col-10">
-            <input type="email" class="form-control" id="Email" placeholder="name@example.com">
-          </div>
-        </div>
+        <form action="{{ path('contact_new') }}" method="post">
 
-        <div class="text-center m-0">
-          <label for="Commentaire" class="form-label">Commentaire :</label>
-          <textarea class="form-control" id="Commentaire" rows="3"></textarea>
-        </div>
-      </form>
-      <button type="submit" class="btn btn-outline-light m-3 w-25">Envoyer</button>
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+
+          <div class="row justify-content-center mb-3">
+            <div class=" col-2">
+              <label for="nom" class="form-label">Nom :</label>
+            </div>
+            <div class="col-4">
+              <input type="text" class="form-control" name="nom" id="nom" placeholder="Nom">
+            </div>
+            <div class="col-2">
+              <label for="prenom" class="form-label">Prenom :</label>
+            </div>
+            <div class="col-4">
+              <input type="text" class="form-control" name="prenom" id="prenom" placeholder="Prenom">
+            </div>
+          </div>
+
+          <div class="row justify-content-center mb-3">
+            <div class=" col-2">
+              <label for="email" class="form-label">Email :</label>
+            </div>
+            <div class="col-10">
+              <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+            </div>
+          </div>
+
+          <div class="text-center m-0">
+            <label for="description" class="form-label">Description :</label>
+            <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+             <button type="submit" class="btn btn-outline-light m-3 w-25">Envoyer</button>
+          </div>
+        </form>
     </div>
-  </div>
-  <div class="FooterNav">
-    <div class="FootLink">
-      © 2024 Wikout
+    <div class="FooterNav">
+      <div class="FootLink">
+        © 2024 Wikout
+      </div>
+      <div class="FootLink">
+        <a href="{{ path('confidentialite_cookies') }}">Confidentialité et cookies</a>
+      </div>
+      <div class="FootLink">
+        <a href="{{ path('condition_utilisation') }}">Conditions d’utilisation</a>
+      </div>
     </div>
-    <div class="FootLink">
-      <a href="{{ path('confidentialite_cookies') }}">Confidentialité et cookies</a>
-    </div>
-    <div class="FootLink">
-      <a href="{{ path('condition_utilisation') }}">Conditions d’utilisation</a>
-    </div>
-  </div>
-</footer>
+  </footer>
 {% endblock %}

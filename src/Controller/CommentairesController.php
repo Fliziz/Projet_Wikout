@@ -21,9 +21,10 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 final class CommentairesController extends AbstractController
 {   
     
-    #[Route('commentaire/index', name: 'commentaires_index')]
+    #[Route('admin/commentaire/index', name: 'commentaires_index')]
     public function index(CommentairesRepository $commentairesRepository): Response
     {
+        
         $commentaires = $commentairesRepository->findAll();
 
         return $this->render('commentaires/index.html.twig', [
@@ -34,7 +35,12 @@ final class CommentairesController extends AbstractController
     #[Route('fiches/{id}/commentaire/new',name: 'commentaire_new', methods: ['GET', 'POST'])]
     public function new(CsrfTokenManagerInterface $csrfTokenManager,Request $request, EntityManagerInterface $em, Fiches $fiche, FicheContenuRepository $ficheContenuRepository): Response
     {   
-        
+        $utilisateur = $this->getUser();
+
+        if ($utilisateur === null) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $FicheContenu = $ficheContenuRepository->findOneBy(['Fiche' => $fiche]);
         
         $csrfToken = $csrfTokenManager->getToken('fiches_edit')->getValue();
@@ -78,11 +84,10 @@ final class CommentairesController extends AbstractController
     public function edit(CsrfTokenManagerInterface $csrfTokenManager,$com,Request $request,CommentairesRepository $commentairesRepository, EntityManagerInterface $em,Fiches $Fiche): Response
     {
         
-        
         // $commentairess = $commentairesRepository -> findAll();
         $commentaire = $commentairesRepository->find($com);
         
-        if ($this->getUser() !== $commentaire->getUtilisateur()) {
+        if ($this->getUser() !== $commentaire->getUtilisateur() || $this->getUser() === null) {
             return $this->redirectToRoute('fiche_show', [
                 'id' => $Fiche->getId()
             ]);

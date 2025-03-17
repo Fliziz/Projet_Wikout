@@ -39,12 +39,14 @@ security:
                 path: /logout  # La route pour se déconnecter
 
     access_control:
-         - { path: ^/admin, roles: ROLE_ADMIN }
+         
          - { path: ^/login, roles: PUBLIC_ACCESS }
-         - { path: ^/utilisateurs, roles: IS_AUTHENTICATED_FULLY }
-         - { path: ^/commentaire, roles: IS_AUTHENTICATED_FULLY }
-         - { path: ^/fiches, roles: PUBLIC_ACCESS}
+         - { path: ^/fiches/\d+, roles: PUBLIC_ACCESS }
+         - { path: ^/fiches/, roles: ROLE_ADMIN }
          - { path: ^/utilisateurs/new, roles: PUBLIC_ACCESS }
+         - { path: ^/utilisateurs, roles: IS_AUTHENTICATED_FULLY }
+         - { path: ^/commentaire/new, roles: ROLE_Utilisateur }
+         - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_Utilisateur }
          
 
