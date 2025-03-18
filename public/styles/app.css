@@ -576,7 +576,7 @@ footer{
 }
 
 
-@media screen and (min-width: 1000px) and (max-width: 1400px) {/* Tablette */
+@media screen and (min-width: 1000px) and (max-width: 1400px) {
    
     #hide1{
         display: none;
