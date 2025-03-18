@@ -6,7 +6,7 @@
 <nav class="navbar navbar-expand-lg data-bs-theme" style=" background-color: #27252A;" data-bs-theme="dark">
     <div class="container-fluid">
 
-      <a class="navbar-brand" href="{{ path('accueil') }}"><img src="{{ asset('styles/Image/LogoSite.webp') }}" alt="Logo" class="Logo" /></a>
+      <a class="navbar-brand" href="{{ path('accueil') }}"><img src="{{ asset('styles/Image/LogoSite.webp') }}" alt="Logo du site wikout" class="Logo" /></a>
 
       <button class="navbar-toggler btn-light" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -29,14 +29,14 @@
                 <a href="{{ path('utilisateurs_index') }}" class="nav-link px-2 text-white">Espace Admin</a>
               {% endif %}
               {% if app.user  %}
-                <img src="{{ asset(app.user.PhotoProfil) }}" alt="Logo" class="Logo" />
+                <img src="{{ asset(app.user.PhotoProfil) }}" alt="photo de profil" class="Logo" />
                 <a href="{{ path('utilisateurs_profile') }}" class="nav-link px-2 text-white">{{ app.user.pseudo }}</a>
                 <a href="{{ path('app_logout') }}" class="nav-link border-1 border-white">
                   <img src="{{ asset("styles/Image/logout.png") }}" alt="logo de déconnetion" width = "20px" class="ms-2"/>
                 </a>
                 
               {% else %}
-                <img src="{{ asset('styles/Image/Avatar_Guest.png') }}" alt="Logo" class="Logo" />
+                <img src="{{ asset('styles/Image/Avatar_Guest.png') }}" alt="photo de profil" class="Logo" />
                 <a href="{{ path('app_login') }}" class="nav-link px-2 text-white">Inscription\Connexion</a>
               {% endif %}
 
@@ -82,7 +82,7 @@
 
                     <div class="Type">
                       <div class="DivImage">
-                        <img src="{{ asset('styles/Image/Barre.jpg') }}" alt="" class="Image">
+                        <img src="{{ asset('styles/Image/Barre.jpg') }}" alt="image d'une haltere" class="Image">
                       </div>
                       <div class="TypeText">
                         <p class="Tag">{{ fiche.Type.nom }}</p>
@@ -91,7 +91,7 @@
 
                     <div class="Type">
                       <div class="DivImage">
-                        <img src="{{ asset('styles/Image/Pec.png') }}" alt="" class="Image">
+                        <img src="{{ asset('styles/Image/Pec.png') }}" alt="image dessiner d'une cage thorasique avec les pec en rouge" class="Image">
                       </div>
                       <div class="TypeText">
                         <p class="Tag" >{{ fiche.Categorie.nom }}</p>
@@ -100,7 +100,7 @@
 
                     <div class="Type">
                       <div class="DivImage">
-                        <img src="{{ asset('styles/Image/Biceps.png') }}" alt="" class="Image">
+                        <img src="{{ asset('styles/Image/Biceps.png') }}" alt="image d'un biceps qui curl" class="Image">
                       </div>
                       <div class="TypeText">
                         <p class="Tag" >{{ fiche.Difficulte.nom }}</p>
@@ -121,12 +121,12 @@
 
               </div>
             </article>
-            <article class="col" id="hide">
+            <article class="col" id="hide1">
               <div class="Voir-Plus-Fiche" >
 
               </div>
             </article>
-            <article class="col" id="hide">
+            <article class="col" id="hide2">
               <div class="Voir-Plus-Fiche">
 
               </div>
